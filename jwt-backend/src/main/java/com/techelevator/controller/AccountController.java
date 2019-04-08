@@ -7,6 +7,7 @@ import com.techelevator.authentication.JwtTokenHandler;
 import com.techelevator.authentication.RegistrationResult;
 import com.techelevator.authentication.UnauthorizedException;
 import com.techelevator.authentication.UserCreationException;
+import com.techelevator.model.JdbcUserDao;
 import com.techelevator.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class AccountController {
 
     @Autowired
     private JwtTokenHandler tokenHandler;
+    
+    @Autowired
+    private JdbcUserDao userDao;
 
     @PostMapping("/login")
     public String login(@RequestBody User user) throws UnauthorizedException {
@@ -48,11 +52,22 @@ public class AccountController {
             }
         }
     	else {
-    		auth.register(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getDateofbirth());
+    		auth.register(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getDateOfBirth());
     		System.out.println(user.getUsername());
     		registrationResult.setSuccess(true);
     	}
     	return registrationResult;
+    }
+    
+    @RequestMapping(path="/user?user_id={id}", method=RequestMethod.GET)
+    public User getUser(@PathVariable Long id) throws UserNotFoundException {
+    	User user = userDao.getUserById(id);
+    	if(user != null && user.getId() == auth.getCurrentUser().getId()) {
+    		return user;
+    	} else {
+    		throw new UserNotFoundException(id, "User not found!");
+    	}
+    	
     }
 
 }

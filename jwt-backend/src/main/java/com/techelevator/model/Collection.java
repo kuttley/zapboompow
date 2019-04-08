@@ -5,10 +5,15 @@ public class Collection {
 	private long id;
 	private String collection_name;
 	private boolean public_bool;
+	
+	public Collection() {
+		
+	}
 
 	public long getId() {
 		return id;
 	}
+	
 	public void setId(long id) {
 		this.id = id;
 	}

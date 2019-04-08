@@ -17,7 +17,7 @@ public class User {
     private String email;
     
     @NotBlank(message="date of birth required")
-    private String dateofbirth;
+    private String dateOfBirth;
 
     @NotBlank(message="Role is required")
     private String role;
@@ -101,11 +101,11 @@ public class User {
 		this.email = email;
 	}
 
-	public String getDateofbirth() {
-		return dateofbirth;
+	public String getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setDateofbirth(String dateofbirth) {
-		this.dateofbirth = dateofbirth;
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 }

@@ -55,7 +55,7 @@ public class JdbcUserDao implements UserDao {
         newUser.setUsername(userName);
         newUser.setRole(role);
         newUser.setEmail(email);
-        newUser.setDateofbirth(dateofbirth);
+        newUser.setDateOfBirth(dateofbirth);
 
         return newUser;
     }
@@ -122,7 +122,7 @@ public class JdbcUserDao implements UserDao {
         user.setUsername(results.getString("username"));
         user.setRole(results.getString("role"));
         user.setEmail(results.getString("email"));
-        user.setDateofbirth(results.getString("date_of_birth"));;
+        user.setDateOfBirth(results.getString("date_of_birth"));;
         return user;
     }
 
@@ -137,5 +137,16 @@ public class JdbcUserDao implements UserDao {
             return null;
         }
     }
+
+	@Override
+	public User getUserById(Long id) {
+		String sql = "SELECT username, role FROM users WHERE user_id = ?";
+		 SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+		 if(results.next()) {
+	            return mapResultToUser(results);
+	        } else {
+	            return null;
+	        }
+	    }
 
 }
