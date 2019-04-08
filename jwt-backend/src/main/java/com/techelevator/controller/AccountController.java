@@ -48,7 +48,8 @@ public class AccountController {
             }
         }
     	else {
-    		auth.register(user.getUsername(), user.getPassword(), user.getRole());
+    		auth.register(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getDateofbirth());
+    		System.out.println(user.getUsername());
     		registrationResult.setSuccess(true);
     	}
     	return registrationResult;
