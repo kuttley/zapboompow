@@ -36,6 +36,10 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = auth.getUser();
 
+  if (!authRequired && loggedIn) {
+    return next('/');
+  }
+
   if (authRequired && !loggedIn) {
     return next('/login');
   }

@@ -4,13 +4,14 @@
       <div class="row justify-content-between">
         <router-link to="/" id="logo" class="col col-sm-auto h1">TEMPORARY</router-link>
         <div class="col col-sm-auto">
-          <router-link to="/register">Register</router-link> |
-          <router-link to="/login">Login</router-link>
+          <router-link to="/register" replace>Register</router-link> |
+          <router-link to="/login" replace>Login</router-link>
+          <router-link v-on:click.native="logout" to="/login">Logout</router-link>
         </div>
       </div>
     </div>
 
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -18,7 +19,21 @@
 import './assets/fonts.css';
 import auth from '@/auth';
 export default {
-  
+  mounted() {
+    if (auth.getUser() != null) {
+      this.$router.replace();
+    }
+  },
+  methods: {
+    logout() {
+      auth.logout();
+      this.$router.push('/login');
+      localStorage.authenticated = false;
+    },
+    setAuthenticated(status) {
+      localStorage.authenticated = status;
+    }
+  }
 }
 </script>
 

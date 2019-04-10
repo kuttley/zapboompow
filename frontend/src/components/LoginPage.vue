@@ -76,6 +76,7 @@ export default {
             }
             auth.saveToken(token);
             this.$router.push('/');
+            localStorage.authenticated = true;
           }
         })
         .catch((err) => console.error(err));
