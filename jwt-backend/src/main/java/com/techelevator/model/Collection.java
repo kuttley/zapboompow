@@ -2,7 +2,8 @@ package com.techelevator.model;
 
 public class Collection {
 
-	private long id;
+	private long user_id;
+	private long collection_id;
 	private String collection_name;
 	private boolean public_bool;
 	
@@ -10,12 +11,12 @@ public class Collection {
 		
 	}
 
-	public long getId() {
-		return id;
+	public long getCollection_id() {
+		return collection_id;
 	}
 	
-	public void setId(long id) {
-		this.id = id;
+	public void setCollection_id(long collection_id) {
+		this.collection_id = collection_id;
 	}
 
 	public String getCollection_name() {
@@ -29,5 +30,13 @@ public class Collection {
 	}
 	public void setPublic_bool(boolean public_bool) {
 		this.public_bool = public_bool;
+	}
+
+	public long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(long user_id) {
+		this.user_id = user_id;
 	}
 }

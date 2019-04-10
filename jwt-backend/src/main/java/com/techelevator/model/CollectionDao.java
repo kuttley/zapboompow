@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface CollectionDao {
 	
-	public Collection saveCollection(Collection collection);
+	public Collection saveCollection(long user_id, String collection_name, Boolean public_bool);
 	
-    public void changeCollectionName(Long id, String newCollection_name);
+    public void changeCollectionName(long collection_id, String newCollection_name);
     
     public List<Collection> getCollectionByUsername(String username);
 
-    public Collection findById(Long id);
+    public Collection findById(long collection_id);
 
 }

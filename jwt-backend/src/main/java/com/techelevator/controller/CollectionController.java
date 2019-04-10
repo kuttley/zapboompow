@@ -33,18 +33,18 @@ public class CollectionController {
 	 private JwtTokenHandler tokenHandler;
 	    
 	    @RequestMapping(path="/{id}", method=RequestMethod.GET)
-	    public Collection getCollection(@PathVariable Long id) throws CollectionNotFoundException {
-	    	Collection collection = collectionDao.findById(id);
-	    	if(collection != null && collection.getId() == authProvider.getCurrentUser().getId()) {
+	    public Collection getCollection(@PathVariable long collection_id) throws CollectionNotFoundException {
+	    	Collection collection = collectionDao.findById(collection_id);
+	    	if(collection != null && collection.getUser_id() == authProvider.getCurrentUser().getId()) {
 	    		return collection;
 	    	} else {
-	    		throw new CollectionNotFoundException(id, "Collection not found!");
+	    		throw new CollectionNotFoundException(collection_id, "Collection not found!");
 	    	}
 	    }
 	
 	    
 	    @RequestMapping(path="/", method=RequestMethod.POST)
-	    public String save(@Valid @RequestBody Collection collection, BindingResult result) throws CollectionCreationException {
+	    public Collection save(@Valid @RequestBody Collection collection, BindingResult result) throws CollectionCreationException {
 	    	if(result.hasErrors()) {
 	            String errorMessages = "";
 	            for(ObjectError error : result.getAllErrors()) {
@@ -52,8 +52,8 @@ public class CollectionController {
 	            }
 	            throw new CollectionCreationException(errorMessages);
 	    	}
-	    	collection.setId(authProvider.getCurrentUser().getId());
-	    	collectionDao.saveCollection(collection);
-	    	return "{\"success\":true}";
+	    	collection.setUser_id(authProvider.getCurrentUser().getId());
+	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
+	    
 	    }
 }

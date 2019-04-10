@@ -28,21 +28,22 @@ public class JdbcCollectionDao implements CollectionDao {
 	
 
 	@Override
-	public Collection saveCollection(Collection collection) {
-		long newId = jdbcTemplate.queryForObject("INSERT INTO collections(collection_name, public_bool) VALUES (?, ?) RETURNING collection_id", Long.class, collection.getCollection_name(),
-				collection.isPublic_bool());
+	public Collection saveCollection(long user_id, String collection_name, Boolean public_bool) {
+		long newId = jdbcTemplate.queryForObject("INSERT INTO collections(collection_name, public_bool, user_id) VALUES (?, ?, ?) RETURNING collection_id", Long.class, collection_name,
+				public_bool, user_id);
 
         Collection newCollection = new Collection();
-        newCollection.setId(newId);
-        newCollection.setCollection_name(collection.getCollection_name());
-        newCollection.setPublic_bool(collection.isPublic_bool());
+        newCollection.setCollection_id(newId);
+        newCollection.setCollection_name(collection_name);
+        newCollection.setPublic_bool(public_bool);
+        newCollection.setUser_id(user_id);
        
 
         return newCollection;
 	}
 
 	@Override
-	public void changeCollectionName(Long collection_id, String newCollection_name) {
+	public void changeCollectionName(long collection_id, String newCollection_name) {
 
 		jdbcTemplate.update("UPDATE collections SET collection_name=? WHERE collection_id=?",
                 newCollection_name, collection_id);
@@ -65,7 +66,7 @@ public class JdbcCollectionDao implements CollectionDao {
 	
 	private Collection mapResultToCollection(SqlRowSet results) {
 		Collection collection = new Collection();
-		collection.setId(results.getLong("user_id"));
+		collection.setUser_id(results.getLong("user_id"));
 		collection.setCollection_name(results.getString("collection_name"));
 		collection.setPublic_bool(results.getBoolean("public_bool"));
         return collection;
@@ -74,14 +75,16 @@ public class JdbcCollectionDao implements CollectionDao {
 
 
 	@Override
-	public Collection findById(Long id) {
+	public Collection findById(long id) {
 		String sql = "SELECT * FROM collections WHERE collection_id = ?";
 		return jdbcTemplate.queryForObject(sql, new  CollectionMapper(), id);
 	}
+	
+	
 	private static final class CollectionMapper implements RowMapper<Collection>{
 		public Collection mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Collection collection = new Collection();
-			collection.setId(rs.getLong("collection_id"));
+			collection.setCollection_id(rs.getLong("collection_id"));
 			collection.setCollection_name(rs.getString("collection_name"));
 			collection.setPublic_bool(rs.getBoolean("public_bool"));
 			return collection;

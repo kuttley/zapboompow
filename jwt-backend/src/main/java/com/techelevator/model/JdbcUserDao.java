@@ -128,7 +128,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User getUserByUsername(String username) {
-        String sqlSelectUserByUsername = "SELECT user_id, username, role FROM users WHERE username = ?";
+        String sqlSelectUserByUsername = "SELECT user_id, username, role, email, date_of_birth FROM users WHERE username = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserByUsername, username);
 
         if(results.next()) {
