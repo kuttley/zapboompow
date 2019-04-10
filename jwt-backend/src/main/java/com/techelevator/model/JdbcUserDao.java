@@ -139,11 +139,15 @@ public class JdbcUserDao implements UserDao {
     }
 
 	@Override
-	public User getUserById(Long id) {
-		String sql = "SELECT username, role FROM users WHERE user_id = ?";
+	public User getOtherUserById(Long id) {
+		String sql = "SELECT username FROM users WHERE user_id = ?";
 		 SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 		 if(results.next()) {
-	            return mapResultToUser(results);
+			 User otherUser = new User();
+			 
+			 otherUser.setUsername(results.getString("username"));
+			 otherUser.setId(id);
+	            return otherUser;
 	        } else {
 	            return null;
 	        }

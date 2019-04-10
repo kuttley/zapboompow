@@ -59,15 +59,22 @@ public class AccountController {
     	return registrationResult;
     }
     
-    @RequestMapping(path="/user?user_id={id}", method=RequestMethod.GET)
+    @RequestMapping(path="/user/{id}", method=RequestMethod.GET)
     public User getUser(@PathVariable Long id) throws UserNotFoundException {
-    	User user = userDao.getUserById(id);
-    	if(user != null && user.getId() == auth.getCurrentUser().getId()) {
+    	User currentUser = auth.getCurrentUser();
+    	if (currentUser.getId() == id) {
+    		return currentUser;
+    	}
+    	else {
+    	User user = userDao.getOtherUserById(id);
+    	
+    	if(user != null ) {
     		return user;
     	} else {
     		throw new UserNotFoundException(id, "User not found!");
     	}
     	
+    }
     }
 
 }
