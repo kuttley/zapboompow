@@ -2,8 +2,8 @@
     <div id="nav" class="container-fluid align-items-center rounded">
         <div class="row justify-content-between">
             <router-link to="/" id="logo" class="col col-sm-auto h1">TEMPORARY</router-link>
-            <div v-if="userLoggedIn()" class="col col-sm-auto">
-                <router-link to="/user">Hi, {{username}}</router-link> | 
+            <div v-if="loggedIn" class="col col-sm-auto">
+                <router-link :to="`/user/${this.userID}`">Hi, {{this.username}}</router-link> | 
                 <router-link v-on:click.native="logout" to="/login">Logout</router-link>
             </div>
             <div v-else class="col col-sm-auto">
@@ -11,33 +11,20 @@
                 <router-link to="/login">Login</router-link>
             </div>
         </div>
-        <router-view />
     </div>
 </template>
 
 <script>
-import auth from '@/auth';
-
 export default {
-    data() {
-        return {
-            username: '',
-            userID: '',
-        }
+    props: {
+        loggedIn: Boolean,
+        username: String,
+        userID: Number,
     },
     methods: {
         logout() {
-            auth.logout();
-            this.$router.push('/login');
+            this.$emit('logout');
         },
-        userLoggedIn() {
-            let user = auth.getUser();
-            if (auth.getUser() != null) {
-                this.username = user.sub;
-                return true;
-            } else
-                return false;
-        }
     }
 }
 </script>
