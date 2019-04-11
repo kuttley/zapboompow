@@ -8,7 +8,7 @@ public interface CollectionDao {
 	
     public void changeCollectionName(long collection_id, String newCollection_name);
     
-    public List<Collection> getCollectionByUsername(String username);
+    public List<Collection> getCollectionByUserId(long user_id);
 
     public Collection findById(long collection_id);
     

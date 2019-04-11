@@ -1,5 +1,7 @@
 package com.techelevator.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +38,29 @@ public class CollectionController {
 	    @RequestMapping(path="/{id}", method=RequestMethod.GET)
 	    public Collection getCollection(@PathVariable long collection_id) throws CollectionNotFoundException {
 	    	Collection collection = collectionDao.findById(collection_id);
-	    	if(collection != null && collection.getUser_id() == authProvider.getCurrentUser().getId()) {
-	    		return collection;
+	    	if(collection != null) {
+	    	
+	    		if(collection.isPublic_bool() == true) {
+	    			return collection;
+	    		} else if(collection.getUser_id() == authProvider.getCurrentUser().getId()) {
+	    			return collection;
+	    		}else {
+		    		throw new CollectionNotFoundException(collection_id, "Can not view collection!");
+	    		}
+	    		
 	    	} else {
 	    		throw new CollectionNotFoundException(collection_id, "Collection not found!");
+	    	}
+	    }
+	    
+	    @RequestMapping(path="/all/{id}", method=RequestMethod.GET)
+	    public List<Collection> getAllCollectionsForUser(@PathVariable long user_id) throws CollectionNotFoundException {
+	    	List<Collection> collections = collectionDao.getCollectionByUserId(user_id);
+	    	if(collections != null) {
+	    	
+	    		return collections;
+	    	} else {
+	    		throw new CollectionNotFoundException(0L, "Collections not found!");
 	    	}
 	    }
 	

@@ -50,7 +50,7 @@ public class JdbcCollectionDao implements CollectionDao {
 	}
 
 	@Override
-	public List<Collection> getCollectionByUsername(String username) {
+	public List<Collection> getCollectionByUserId(long user_id) {
 		List<Collection> collections = new ArrayList<Collection>();
         String sqlSelectUserCollections = "SELECT collection_id FROM user_collection WHERE user_id=?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserCollections);

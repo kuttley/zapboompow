@@ -33,6 +33,9 @@ DROP TABLE IF EXISTS comic;
 CREATE TABLE comic
 (
     comic_id integer NOT NULL, -- pulled from API 
+    writer varchar,
+    penciler varchar,
+    name_of_characters varchar,
     CONSTRAINT pk_comic_comic_id PRIMARY KEY (comic_id)
 );
 

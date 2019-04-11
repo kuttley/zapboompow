@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
  * AccountController
  */
 @RestController
+@CrossOrigin
 public class AccountController {
     @Autowired
     private AuthProvider auth;
