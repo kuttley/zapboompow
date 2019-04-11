@@ -27,12 +27,18 @@
                 v-model="user.password"
                 required
             />
-            <router-link :to="{ name: 'register' }">
-                Need an account?
-            </router-link>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">
-                Sign in
-            </button>
+            <div id="submittal" class="row justify-content-center">
+                <div class="col col-sm-auto align-self-center">
+                    <router-link :to="{ name: 'register' }">
+                        Need an account?
+                    </router-link>
+                </div>
+                <div class="col col-sm-auto">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        Sign in
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </template>
@@ -78,7 +84,7 @@ export default {
             this.$router.push('/');
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.log(err));
     },
   },
 };
@@ -88,7 +94,7 @@ export default {
 #login {
     background-color: rgba(255, 255, 255, 0.4);
 }
-h2, form {
+h2, form, #submittal, #submittal div {
     background-color: rgba(255, 255, 255, 0);
 }
 form {

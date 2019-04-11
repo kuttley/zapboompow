@@ -1,10 +1,16 @@
 <template>
-    
+    <div>
+        <user-page />
+    </div>
 </template>
 
 <script>
-export default {
+import UserPage from '@/components/UserPage.vue';
 
+export default {
+    components: {
+        UserPage,
+    },
 }
 </script>
 
