@@ -6,6 +6,7 @@ import Register from '@/views/Register.vue';
 import User from '@/views/User.vue';
 import auth from './auth';
 import CollectionList from '@/views/CollectionList';
+import CollectionCreate from '@/views/CollectionCreate';
 import Collection from '@/views/Collection';
 
 Vue.use(Router)
@@ -38,6 +39,10 @@ const router = new Router({
     {
       path: '/collections',
       component: CollectionList
+    },
+    {
+      path: '/collections/create',
+      component: CollectionCreate
     },
     {
       path: '/collections/:id',

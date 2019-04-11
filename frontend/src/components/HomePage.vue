@@ -29,7 +29,6 @@ const axios = require('axios');
 
 const instance = axios.create({
   baseURL: 'https://gateway.marvel.com:443/v1/public/',
-  timeout: 1000,
   headers: {
     'Content-Type': 'application/json',
   },

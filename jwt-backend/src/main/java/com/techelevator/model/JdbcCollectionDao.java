@@ -68,6 +68,7 @@ public class JdbcCollectionDao implements CollectionDao {
 	private static final class CollectionMapper implements RowMapper<Collection>{
 		public Collection mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Collection collection = new Collection();
+			collection.setUser_id(rs.getLong("user_id"));
 			collection.setCollection_id(rs.getLong("collection_id"));
 			collection.setCollection_name(rs.getString("collection_name"));
 			collection.setPublic_bool(rs.getBoolean("public_bool"));

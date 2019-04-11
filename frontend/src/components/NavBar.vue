@@ -2,9 +2,12 @@
     <div id="nav" class="container-fluid align-items-center rounded">
         <div class="row justify-content-between">
             <router-link to="/" id="logo" class="col col-sm-auto h1">TEMPORARY</router-link>
-            <div v-if="loggedIn" class="col col-sm-auto">
+            <div v-if="loggedIn" class="col col-sm-auto d-flex flex-column">
+              <div>
                 <router-link :to="`/user/${this.userID}`">Hi, {{this.username}}</router-link> | 
                 <router-link v-on:click.native="logout" to="/login">Logout</router-link>
+              </div>
+              <router-link to="/collections/create" tag="button" class="btn btn-primary">Create Collection</router-link>
             </div>
             <div v-else class="col col-sm-auto">
                 <router-link to="/register">Register</router-link> | 
@@ -34,9 +37,6 @@ export default {
   padding: 30px;
   margin-bottom: 15px;
   background-color: rgba(255, 255, 255, 0.4);
-  * {
-    background-color: rgba(255, 255, 255, 0);
-  }
   a {
     font-weight: bold;
     text-decoration: none;

@@ -3,7 +3,9 @@
         <div class="row">
             <div id="profile" class="col col-sm-auto pt-2">
                 <h2>{{this.profile.username}}'s profile</h2>
-                <div></div>
+                <div v-for="collection in profile.collections" :key="collection.collection_id">
+                    <p>{{collection.collection_name}}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -25,10 +27,6 @@ export default {
     props: {
         userID: String,
     },
-    created() {
-        this.getProfileById();
-        this.getProfileCollections();
-    },
     data() {
         return {
             profile: {
@@ -49,8 +47,18 @@ export default {
             instance.get(`/collection/all/${this.userID}`)
             .then((response) => {
                 console.log(response.data);
+                response.data.forEach((collection) => {
+                    if (collection.public_bool == true || this.userID == collection.user_id) {
+                        console.log(collection);
+                        this.profile.collections.push(collection);
+                    }
+                })
             });
         },
+    },
+    created() {
+        this.getProfileById();
+        this.getProfileCollections();
     },
 }
 </script>
