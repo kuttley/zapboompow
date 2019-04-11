@@ -1,5 +1,7 @@
 package com.techelevator.model;
 
+import java.lang.reflect.Array;
+
 public class Collection {
 
 	private long user_id;
@@ -39,4 +41,5 @@ public class Collection {
 	public void setUser_id(long user_id) {
 		this.user_id = user_id;
 	}
+
 }

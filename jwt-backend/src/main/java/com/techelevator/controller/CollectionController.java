@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techelevator.authentication.AuthProvider;
 import com.techelevator.authentication.JwtTokenHandler;
 import com.techelevator.model.Collection;
+import com.techelevator.model.ComicCollection;
 import com.techelevator.model.JdbcCollectionDao;
 
 
@@ -54,6 +55,20 @@ public class CollectionController {
 	    	}
 	    	collection.setUser_id(authProvider.getCurrentUser().getId());
 	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
+	    
+	    }
+	    @RequestMapping(path="/add", method=RequestMethod.POST)
+	    public void addComic(@Valid @RequestBody ComicCollection comicCollection, BindingResult result) throws CollectionNotFoundException {
+	    	System.out.println(comicCollection.getCollection_id()+ " " + comicCollection.getComic_id());
+	    	if(result.hasErrors()) {
+	            String errorMessages = "";
+	            for(ObjectError error : result.getAllErrors()) {
+	                errorMessages += error.getDefaultMessage() + "\n";
+	            }
+	            throw new CollectionNotFoundException(comicCollection.getCollection_id(), errorMessages);
+	    	}
+	    	
+	    	collectionDao.addComicToCollection(comicCollection.getCollection_id(), comicCollection.getComic_id());
 	    
 	    }
 }

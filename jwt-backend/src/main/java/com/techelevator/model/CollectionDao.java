@@ -11,5 +11,7 @@ public interface CollectionDao {
     public List<Collection> getCollectionByUsername(String username);
 
     public Collection findById(long collection_id);
+    
+    public ComicCollection addComicToCollection(long collection_id, long comic_id);
 
 }
