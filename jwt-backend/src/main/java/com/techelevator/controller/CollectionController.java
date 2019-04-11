@@ -57,9 +57,11 @@ public class CollectionController {
 	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
 	    
 	    }
+	    
+	    
 	    @RequestMapping(path="/add", method=RequestMethod.POST)
 	    public void addComic(@Valid @RequestBody ComicCollection comicCollection, BindingResult result) throws CollectionNotFoundException {
-	    	System.out.println(comicCollection.getCollection_id()+ " " + comicCollection.getComic_id());
+
 	    	if(result.hasErrors()) {
 	            String errorMessages = "";
 	            for(ObjectError error : result.getAllErrors()) {

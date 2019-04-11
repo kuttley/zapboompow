@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS collections;
 
 CREATE TABLE collections
 (
+    user_id integer,
     collection_id integer NOT NULL DEFAULT nextval('collection_id_seq'::regclass),
     collection_name varchar(255) NOT NULL,
     public_bool varchar(5) DEFAULT 'true' NOT NULL, 
@@ -37,12 +38,6 @@ CREATE TABLE comic
 
 DROP TABLE IF EXISTS user_collection;
 
-CREATE TABLE user_collection (
-  user_id integer NOT NULL,
-  collection_id integer NOT NULL,
-  CONSTRAINT pk_user_collection_user_id_collection_id PRIMARY KEY (user_id, collection_id)
-);
-
 DROP TABLE IF EXISTS comic_collection;
 
 CREATE TABLE comic_collection (
@@ -51,13 +46,6 @@ CREATE TABLE comic_collection (
   CONSTRAINT pk_comic_collection_comic_id_collection_id PRIMARY KEY (comic_id, collection_id)
 );
 
-ALTER TABLE user_collection
-ADD FOREIGN KEY(user_id)
-REFERENCES users(user_id);
-
-ALTER TABLE user_collection
-ADD FOREIGN KEY(collection_id)
-REFERENCES collections(collection_id);
 
 ALTER TABLE comic_collection 
 ADD FOREIGN KEY(comic_id)
@@ -67,6 +55,7 @@ ALTER TABLE comic_collection
 ADD FOREIGN KEY(collection_id)
 REFERENCES collections(collection_id);
 
+ALTER TABLE collections ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 COMMIT TRANSACTION;
