@@ -35,8 +35,8 @@ public class CollectionController {
 	 @Autowired
 	 private JwtTokenHandler tokenHandler;
 	    
-	    @RequestMapping(path="/{id}", method=RequestMethod.GET)
-	    public Collection getCollection(@PathVariable long collection_id) throws CollectionNotFoundException {
+	    @RequestMapping(path="/{collection_id}", method=RequestMethod.GET)
+	    public Collection getCollection(@PathVariable Long collection_id) throws CollectionNotFoundException {
 	    	Collection collection = collectionDao.findById(collection_id);
 	    	if(collection != null) {
 	    	
@@ -53,8 +53,8 @@ public class CollectionController {
 	    	}
 	    }
 	    
-	    @RequestMapping(path="/all/{id}", method=RequestMethod.GET)
-	    public List<Collection> getAllCollectionsForUser(@PathVariable long user_id) throws CollectionNotFoundException {
+	    @RequestMapping(path="/all/{user_id}", method=RequestMethod.GET)
+	    public List<Collection> getAllCollectionsForUser(@PathVariable Long user_id) throws CollectionNotFoundException {
 	    	List<Collection> collections = collectionDao.getCollectionByUserId(user_id);
 	    	if(collections != null) {
 	    	

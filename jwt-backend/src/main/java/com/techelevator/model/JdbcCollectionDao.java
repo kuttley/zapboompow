@@ -52,27 +52,11 @@ public class JdbcCollectionDao implements CollectionDao {
 	@Override
 	public List<Collection> getCollectionByUserId(long user_id) {
 		List<Collection> collections = new ArrayList<Collection>();
-        String sqlSelectUserCollections = "SELECT collection_id FROM user_collection WHERE user_id=?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserCollections);
-
-        while(results.next()) {
-            Collection collection = mapResultToCollection(results);
-            collections.add(collection);
-        }
+        String sqlSelectUserCollections = "SELECT * FROM collections WHERE user_id=?";
+        collections = jdbcTemplate.query(sqlSelectUserCollections, new CollectionMapper(), user_id);
 
         return collections;
 	}
-
-	
-	private Collection mapResultToCollection(SqlRowSet results) {
-		Collection collection = new Collection();
-		collection.setUser_id(results.getLong("user_id"));
-		collection.setCollection_name(results.getString("collection_name"));
-		collection.setPublic_bool(results.getBoolean("public_bool"));
-        return collection;
-    }
-
-
 
 	@Override
 	public Collection findById(long id) {
@@ -90,9 +74,6 @@ public class JdbcCollectionDao implements CollectionDao {
 			return collection;
 		}
 	}
-
-	
-	
 
 	@Override
 	public ComicCollection addComicToCollection(long collection_id, long comic_id) {

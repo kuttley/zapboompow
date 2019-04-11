@@ -1,6 +1,6 @@
 <template>
     <div>
-        <user-page />
+        <user-page :userID="$attrs.id" />
     </div>
 </template>
 

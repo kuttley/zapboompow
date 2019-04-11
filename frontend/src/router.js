@@ -5,6 +5,8 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import User from '@/views/User.vue';
 import auth from './auth';
+import CollectionList from '@/views/CollectionList';
+import Collection from '@/views/Collection';
 
 Vue.use(Router)
 
@@ -29,7 +31,17 @@ const router = new Router({
     },
     {
       path: '/user/:id',
-      component: User
+      component: User,
+      name: 'user',
+      props: true,
+    },
+    {
+      path: '/collections',
+      component: CollectionList
+    },
+    {
+      path: '/collections/:id',
+      component: Collection
     },
   ]
 })
