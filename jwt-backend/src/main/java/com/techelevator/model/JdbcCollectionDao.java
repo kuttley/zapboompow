@@ -83,7 +83,7 @@ public class JdbcCollectionDao implements CollectionDao {
 		
 		String sql = "SELECT comic_id FROM comic_collection WHERE collection_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collection_id);
-		if (results.next()) {
+		while (results.next()) {
 			comicIds.add(results.getLong("comic_id"));
 		}
 		return comicIds.stream().mapToLong(l -> l).toArray();

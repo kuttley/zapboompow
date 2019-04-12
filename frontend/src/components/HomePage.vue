@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     getRecentComics() {
-      if (localStorage.getItem('newestReleases') == null || (new Date().time() / 1000) - localStorage.getItem('newestReleasesTS') >= 86400 ) {
+      if (localStorage.getItem('newestReleases') == null || (new Date().getTime() / 1000) - localStorage.getItem('newestReleasesTS') >= 86400 ) {
         instance.get('/comics?dateDescriptor=thisWeek&orderBy=-onsaleDate')
           .then((response) => {
             for (let result of response.data.data.results) {
@@ -58,7 +58,7 @@ export default {
               this.newestReleases.push(comicInfo);
             }
             localStorage.setItem('newestReleases', JSON.stringify(this.newestReleases));
-            localStorage.setItem('newestReleasesTS', (new Date().time() / 1000));
+            localStorage.setItem('newestReleasesTS', (new Date().getTime() / 1000));
 
             console.log(localStorage.getItem('newestReleases'));
           })
