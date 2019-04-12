@@ -1,5 +1,5 @@
 <template>
-    <div id="nav" class="container-fluid align-items-center rounded">
+    <div id="nav" class="container-fluid align-items-center rounded shadow-sm">
         <div class="row justify-content-between">
             <router-link to="/" id="logo" class="col col-sm-auto h1">TEMPORARY</router-link>
             <div v-if="loggedIn" class="col col-sm-auto d-flex flex-column">

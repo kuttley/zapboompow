@@ -1,6 +1,6 @@
 <template>
     <div>
-        <user-page :userID="$attrs.id" />
+        <user-page :profileID="$attrs.id" />
     </div>
 </template>
 
@@ -8,6 +8,10 @@
 import UserPage from '@/components/UserPage.vue';
 
 export default {
+    props: {
+        userID: String,
+        profileID: String,
+    },
     components: {
         UserPage,
     },

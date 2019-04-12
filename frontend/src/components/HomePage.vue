@@ -1,7 +1,7 @@
 <template>
   <div id="home" class="container">
     <div class="row justify-content-between mb-3">
-      <div id="main" class="col col-sm-auto rounded pt-2">
+      <div id="main" class="col col-sm-auto rounded pt-2 shadow-sm">
         <h2>Recent Comic Releases</h2>
         <v-carousel hide-delimiters height="250" dark class="mb-3">
           <v-carousel-item v-for="comic in newestReleases" v-bind:key="comic.id">
@@ -11,12 +11,12 @@
 
         </v-carousel>
       </div>
-      <div id="sidebar" class="col col-sm-auto rounded pt-2">
+      <div id="sidebar" class="col col-sm-auto rounded pt-2 shadow-sm">
         <h5 class="text-center">All Collections Stats</h5>
       </div>
     </div>
     <div class="row">    
-      <div id="featured" class="col col-sm-auto rounded pt-2">
+      <div id="featured" class="col col-sm-auto rounded pt-2 shadow-sm">
         <h3>Featured Collections</h3>
       </div>
     </div>
@@ -73,6 +73,10 @@ export default {
 <style scoped lang="scss">
 .container {
   margin-left: 0;
+}
+
+.v-carousel {
+  box-shadow: none!important;
 }
 
 #home {
