@@ -29,6 +29,8 @@ public class JdbcCollectionDao implements CollectionDao {
 
 	@Override
 	public Collection saveCollection(long user_id, String collection_name, Boolean public_bool) {
+		
+		
 		long newId = jdbcTemplate.queryForObject("INSERT INTO collections(collection_name, public_bool, user_id) VALUES (?, ?, ?) RETURNING collection_id", Long.class, collection_name,
 				public_bool, user_id);
 
