@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +59,16 @@ public class CollectionController {
 	    	List<Collection> collections = collectionDao.getCollectionsByUserId(user_id);
 	    	if(collections != null) {
 	    	
+	    		return collections;
+	    	} else {
+	    		throw new CollectionNotFoundException(0L, "Collections not found!");
+	    	}
+	    }
+	    
+	    @GetMapping("/all")
+	    public List<Collection> getAllPublicCollections() throws CollectionNotFoundException {
+	    	List<Collection> collections = collectionDao.getAllPublicCollections();
+	    	if (collections != null) {
 	    		return collections;
 	    	} else {
 	    		throw new CollectionNotFoundException(0L, "Collections not found!");

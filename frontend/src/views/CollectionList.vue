@@ -1,10 +1,17 @@
 <template>
-    <div></div>
+    <collection-list :public="searchingPublic"  />
 </template>
 
 <script>
-export default {
+import CollectionList from '@/components/CollectionList.vue';
 
+export default {
+    props: {
+        searchingPublic: Boolean,
+    },
+    components: {
+        CollectionList,
+    }
 }
 </script>
 

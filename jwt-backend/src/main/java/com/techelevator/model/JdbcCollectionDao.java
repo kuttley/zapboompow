@@ -57,6 +57,19 @@ public class JdbcCollectionDao implements CollectionDao {
 
         return collections;
 	}
+	
+
+	@Override
+	public List<Collection> getAllPublicCollectionsForUserId(long user_id) {
+		String sqlSelectAllPublicCollections = "SELECT * FROM collections WHERE public_bool = true AND user_id = ?";
+		return jdbcTemplate.query(sqlSelectAllPublicCollections, new CollectionMapper(), user_id);
+	}
+	
+	@Override
+	public List<Collection> getAllPublicCollections() {
+		String sqlSelectAllPublicCollections = "SELECT * from collections where public_bool = true";
+		return jdbcTemplate.query(sqlSelectAllPublicCollections, new CollectionMapper());
+	}
 
 	@Override
 	public Collection findById(long id) {

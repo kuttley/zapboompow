@@ -16,4 +16,8 @@ public interface CollectionDao {
     
     public long[] getComicsInCollectionByCollectionId(long collection_id);
 
+	public List<Collection> getAllPublicCollections();
+
+	public List<Collection> getAllPublicCollectionsForUserId(long user_id);
+
 }
