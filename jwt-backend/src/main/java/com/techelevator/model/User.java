@@ -1,6 +1,8 @@
 package com.techelevator.model;
 
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,6 +11,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * User
  */
 public class User {
+	@Min(6)
+	@Max(30)
     @NotBlank(message="Username is required")
     private String username;
    
