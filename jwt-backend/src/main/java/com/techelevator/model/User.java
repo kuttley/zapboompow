@@ -16,9 +16,6 @@ public class User {
     @Email(message="Not a valid email")
     private String email;
     
-    @NotBlank(message="date of birth required")
-    private String dateOfBirth;
-
     @NotBlank(message="Role is required")
     private String role;
     private long id;
@@ -101,11 +98,6 @@ public class User {
 		this.email = email;
 	}
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+	
+	
 }

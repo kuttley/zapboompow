@@ -5,11 +5,10 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   user_id serial NOT NULL,
   email varchar(255) NOT NULL UNIQUE, --Email
-  date_of_birth varchar(10) NOT NULL, -- D.O.B. 
-  username varchar(255) NOT NULL UNIQUE,     -- Username
+  username varchar(30) NOT NULL UNIQUE,     -- Username
   password varchar(32) NOT NULL,      -- Password
   salt varchar(256) NOT NULL,          -- Password Salt
-  role varchar(255) NOT NULL default('user'), 
+  role varchar(255) NOT NULL default('standard'), 
   CONSTRAINT pk_users_user_id PRIMARY KEY (user_id)
 
 );
@@ -33,9 +32,6 @@ DROP TABLE IF EXISTS comic;
 CREATE TABLE comic
 (
     comic_id integer NOT NULL, -- pulled from API 
-    writer varchar,
-    penciler varchar,
-    name_of_characters varchar,
     CONSTRAINT pk_comic_comic_id PRIMARY KEY (comic_id)
 );
 
