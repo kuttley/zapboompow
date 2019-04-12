@@ -47,17 +47,25 @@ export default {
   },
   methods: {
     getRecentComics() {
-      instance.get('/comics?dateDescriptor=thisWeek&orderBy=-onsaleDate')
-        .then((response) => {
-          for (let result of response.data.data.results) {
-            let comicInfo = {};
-            comicInfo.id = result.id;
-            comicInfo.title = result.title;
-            comicInfo.thumbnail = result.thumbnail.path + '/portrait_incredible.' + result.thumbnail.extension;
-            this.newestReleases.push(comicInfo);
-          }
-        })
-        .catch((err) => console.log(err));
+      if (localStorage.getItem('newestReleases') == null || (new Date().time() / 1000) - localStorage.getItem('newestReleasesTS') >= 86400 ) {
+        instance.get('/comics?dateDescriptor=thisWeek&orderBy=-onsaleDate')
+          .then((response) => {
+            for (let result of response.data.data.results) {
+              let comicInfo = {};
+              comicInfo.id = result.id;
+              comicInfo.title = result.title;
+              comicInfo.thumbnail = result.thumbnail.path + '/portrait_incredible.' + result.thumbnail.extension;
+              this.newestReleases.push(comicInfo);
+            }
+            localStorage.setItem('newestReleases', JSON.stringify(this.newestReleases));
+            localStorage.setItem('newestReleasesTS', (new Date().time() / 1000));
+
+            console.log(localStorage.getItem('newestReleases'));
+          })
+          .catch((err) => console.log(err));
+      } else {
+        this.newestReleases = JSON.parse(localStorage.getItem('newestReleases'));
+      }
     }
   },
   computed: {

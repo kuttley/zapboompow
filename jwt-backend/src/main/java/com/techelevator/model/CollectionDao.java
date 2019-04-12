@@ -8,10 +8,12 @@ public interface CollectionDao {
 	
     public void changeCollectionName(long collection_id, String newCollection_name);
     
-    public List<Collection> getCollectionByUserId(long user_id);
+    public List<Collection> getCollectionsByUserId(long user_id);
 
     public Collection findById(long collection_id);
     
-    public ComicCollection addComicToCollection(long collection_id, long comic_id);
+    public void addComicToCollection(long collection_id, long comic_id);
+    
+    public long[] getComicsInCollectionByCollectionId(long collection_id);
 
 }

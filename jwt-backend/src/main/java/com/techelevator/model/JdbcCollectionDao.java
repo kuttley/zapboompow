@@ -50,7 +50,7 @@ public class JdbcCollectionDao implements CollectionDao {
 	}
 
 	@Override
-	public List<Collection> getCollectionByUserId(long user_id) {
+	public List<Collection> getCollectionsByUserId(long user_id) {
 		List<Collection> collections = new ArrayList<Collection>();
         String sqlSelectUserCollections = "SELECT * FROM collections WHERE user_id=?";
         collections = jdbcTemplate.query(sqlSelectUserCollections, new CollectionMapper(), user_id);
@@ -64,32 +64,44 @@ public class JdbcCollectionDao implements CollectionDao {
 		return jdbcTemplate.queryForObject(sql, new  CollectionMapper(), id);
 	}
 	
+
+	@Override
+	public void addComicToCollection(long collection_id, long comic_id) {
+		String sqlComicExists = "SELECT comic_id FROM comic WHERE comic_id = ?";
+		if (jdbcTemplate.queryForRowSet(sqlComicExists, comic_id).next() != true) {
+			String sqlInsertComicId = "INSERT INTO comic(comic_id) VALUES (?)";
+			jdbcTemplate.update(sqlInsertComicId, comic_id);
+		}
+		
+		String sql = "INSERT INTO comic_collection(comic_id, collection_id) VALUES (?, ?)";
+		jdbcTemplate.update(sql, comic_id, collection_id);
+	}
 	
-	private static final class CollectionMapper implements RowMapper<Collection>{
+	@Override
+	public long[] getComicsInCollectionByCollectionId(long collection_id) {
+		List<Long> comicIds = new ArrayList<Long>();
+		
+		String sql = "SELECT comic_id FROM comic_collection WHERE collection_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collection_id);
+		if (results.next()) {
+			comicIds.add(results.getLong("comic_id"));
+		}
+		return comicIds.stream().mapToLong(l -> l).toArray();
+	}
+	
+	private final class CollectionMapper implements RowMapper<Collection>{
 		public Collection mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Collection collection = new Collection();
 			collection.setUser_id(rs.getLong("user_id"));
 			collection.setCollection_id(rs.getLong("collection_id"));
 			collection.setCollection_name(rs.getString("collection_name"));
 			collection.setPublic_bool(rs.getBoolean("public_bool"));
+			
+			long[] comicsInCollection = getComicsInCollectionByCollectionId(collection.getCollection_id());
+			collection.setComic_ids_in_collection(comicsInCollection);
+			
 			return collection;
 		}
 	}
-
-	@Override
-	public ComicCollection addComicToCollection(long collection_id, long comic_id) {
-		ComicCollection comicCollection = new ComicCollection();
-		String sqlComicExists = "SELECT comic_id FROM comic WHERE comic_id = ?";
-		if (jdbcTemplate.queryForRowSet(sqlComicExists, comic_id).next() != true) {
-			String sqlInsertComicId = "INSERT INTO comic(comic_id) VALUES (?)";
-			jdbcTemplate.update(sqlInsertComicId, comic_id);
-					
-		}
-		
-		String sql = "INSERT INTO comic_collection(comic_id, collection_id) VALUES (?, ?)";
-		jdbcTemplate.update(sql, comic_id, collection_id);
-		comicCollection.setCollection_id(collection_id);
-		comicCollection.setComic_id(comic_id);
-		return comicCollection;
-	}
+	
 }

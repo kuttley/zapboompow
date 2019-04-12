@@ -4,9 +4,9 @@
         <v-layout align-center justify-center column>
             <div>
                 <form @submit.prevent="createCollection">
-                    <v-text-field label="Collection Name" v-model="newCollection.collectionName" clearable name="collectionName" v-validate="'required'" />
+                    <v-text-field label="Collection Name" v-model="newCollection.collection_name" clearable name="collectionName" v-validate="'required'" />
 
-                    <v-checkbox v-model="newCollection.isPublic" label="Public"></v-checkbox>
+                    <v-checkbox v-model="newCollection.public_bool" label="Public"></v-checkbox>
 
                     <v-btn type='submit'>submit</v-btn>
                 </form>
@@ -33,16 +33,17 @@ export default {
         return {
             currUser: auth.getUser(),
             newCollection: {
-                collectionName: '',
-                isPublic: true,
+                collection_name: '',
+                public_bool: true,
             },
         }
     },
     methods: {
         createCollection() {
-            backend.post('/collection/add', this.newCollection)
+            backend.post('/collection/', this.newCollection)
             .then(() => {
                 this.$router.push('/user/' + this.currUser.uid);
+
             })
             .catch((err) => console.log(err));
         },

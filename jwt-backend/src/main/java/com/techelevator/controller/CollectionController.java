@@ -55,7 +55,7 @@ public class CollectionController {
 	    
 	    @RequestMapping(path="/all/{user_id}", method=RequestMethod.GET)
 	    public List<Collection> getAllCollectionsForUser(@PathVariable Long user_id) throws CollectionNotFoundException {
-	    	List<Collection> collections = collectionDao.getCollectionByUserId(user_id);
+	    	List<Collection> collections = collectionDao.getCollectionsByUserId(user_id);
 	    	if(collections != null) {
 	    	
 	    		return collections;

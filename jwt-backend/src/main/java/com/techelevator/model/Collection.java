@@ -8,6 +8,7 @@ public class Collection {
 	private long collection_id;
 	private String collection_name;
 	private boolean public_bool;
+	private long[] comic_ids_in_collection;
 	
 	public Collection() {
 		
@@ -40,6 +41,14 @@ public class Collection {
 
 	public void setUser_id(long user_id) {
 		this.user_id = user_id;
+	}
+
+	public long[] getComic_ids_in_collection() {
+		return comic_ids_in_collection;
+	}
+
+	public void setComic_ids_in_collection(long[] comic_ids_in_collection) {
+		this.comic_ids_in_collection = comic_ids_in_collection;
 	}
 
 }
