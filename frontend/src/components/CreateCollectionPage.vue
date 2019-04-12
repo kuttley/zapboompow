@@ -1,10 +1,10 @@
 <template>
     <div id="createCollectPage" class="container rounded shadow-sm text-center">
         <h3>Create a new Collection</h3>
-        <v-layout align-center justify-center column>
+        <v-layout align-center justify-center column mt-3>
             <div>
                 <form @submit.prevent="createCollection">
-                    <v-text-field label="Collection Name" v-model="newCollection.collection_name" clearable name="collectionName" v-validate="'required'" />
+                    <v-text-field label="Collection Name" v-model="newCollection.collection_name" clearable name="collectionName" v-validate="'required'" box hide-details></v-text-field>
 
                     <v-checkbox v-model="newCollection.public_bool" label="Public"></v-checkbox>
 
@@ -16,16 +16,8 @@
 </template>
 
 <script>
-const axios = require('axios');
 import auth from '@/auth';
-
-const backend = axios.create({
-    baseURL: `${process.env.VUE_APP_REMOTE_API}`,
-    headers: {
-        'Authorization': "Bearer " + auth.getToken(),
-        'Content-Type': 'application/json',
-    },
-});
+import apiCalls from '@/apiCalls';
 
 export default {
     name: "create-collection-page",
@@ -40,12 +32,12 @@ export default {
     },
     methods: {
         createCollection() {
-            backend.post('/collection/', this.newCollection)
-            .then(() => {
-                this.$router.push('/user/' + this.currUser.uid);
+            console.log(this.currUser);
 
-            })
-            .catch((err) => console.log(err));
+            apiCalls.post('/collection/', this.newCollection)
+                .then(() => {
+                    this.$router.push('/user/' + this.currUser.uid);
+                });
         },
     },
 }
@@ -54,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 #createCollectPage {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgb(193, 225, 231);
 }
 </style>
 

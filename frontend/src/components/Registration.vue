@@ -15,8 +15,6 @@
             <span v-show="errors.has('confirmPassword')">The passwords do not match.</span>
             <label for="email" class="sr-only">Email Address</label>
             <input type="email" id="email" class="form-control" placeholder="Email Address" v-model="user.email" required />
-            <label for="dateOfBirth" class="sr-only">Date Of Birth</label>
-            <input type="date" id="dateOfBirth" class="form-control" v-model="user.dateOfBirth" required />
             
             
             <router-link :to="{ name: 'login'}">Have an account?</router-link>
@@ -26,6 +24,8 @@
 </template>
 
 <script>
+import apiCalls from '@/apiCalls';
+
 export default {
     data() {
         return {
@@ -35,30 +35,20 @@ export default {
                 confirmPassword: '',
                 role: 'standard',
                 email: '',
-                dateOfBirth: '',
             },
             registrationErrors: false,
         }
     },
     methods: {
         register() {
-            fetch(`${process.env.VUE_APP_REMOTE_API}/register`, {
-                method: 'POST',
-                headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.user),
-            })
-            .then((response) => {
-                if (response.ok) {
-                    console.log(`${process.env.VUE_APP_REMOTE_API}/register`);
-                    this.$router.push({ path: '/login', query: { registration: 'success' } });
-                } else {
-                    this.registrationErrors = true;
-                }
+            apiCalls.post('/register', this.user)
+                .then((response) => {
+                    if (response.ok) {
+                        this.$router.push({ path: '/login', query: { registration: 'success' } });
+                    } else {
+                        this.registrationErrors = true;
+                    }
                 })
-            .then((err) => console.error(err));
         }
     }
 }
@@ -66,10 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 #registration {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-h2, form {
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgb(193, 225, 231);
 }
 form {
     padding-left: 25%;

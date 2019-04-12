@@ -85,7 +85,11 @@ public class CollectionController {
 	            }
 	            throw new CollectionCreationException(errorMessages);
 	    	}
-	    	System.out.println(authProvider.getCurrentUser().getId());
+	    	
+	    	if(authProvider.getCurrentUser().getRole() != "premium" && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
+	            throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
+
+	    	}
 	    	collection.setUser_id(authProvider.getCurrentUser().getId());
 	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
 	    

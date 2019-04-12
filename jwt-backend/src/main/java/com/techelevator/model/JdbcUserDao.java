@@ -43,19 +43,19 @@ public class JdbcUserDao implements UserDao {
      * @return the new user
      */
     @Override
-    public User saveUser(String userName, String password, String role, String email, String dateofbirth) {
+    public User saveUser(String userName, String password, String role, String email) {
         byte[] salt = passwordHasher.generateRandomSalt();
         String hashedPassword = passwordHasher.computeHash(password, salt);
         String saltString = new String(Base64.encode(salt));
-        long newId = jdbcTemplate.queryForObject("INSERT INTO users(username, password, salt, role, email, date_of_birth) VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id", Long.class, userName,
-                hashedPassword, saltString, role, email, dateofbirth);
+        long newId = jdbcTemplate.queryForObject("INSERT INTO users(username, password, salt, role, email) VALUES (?, ?, ?, ?, ?) RETURNING user_id", Long.class, userName,
+                hashedPassword, saltString, role, email);
 
         User newUser = new User();
         newUser.setId(newId);
         newUser.setUsername(userName);
         newUser.setRole(role);
         newUser.setEmail(email);
-        newUser.setDateOfBirth(dateofbirth);
+       
 
         return newUser;
     }
@@ -122,13 +122,12 @@ public class JdbcUserDao implements UserDao {
         user.setUsername(results.getString("username"));
         user.setRole(results.getString("role"));
         user.setEmail(results.getString("email"));
-        user.setDateOfBirth(results.getString("date_of_birth"));;
         return user;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        String sqlSelectUserByUsername = "SELECT user_id, username, role, email, date_of_birth FROM users WHERE username = ?";
+        String sqlSelectUserByUsername = "SELECT user_id, username, role, email FROM users WHERE username = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserByUsername, username);
 
         if(results.next()) {

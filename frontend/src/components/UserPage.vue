@@ -33,28 +33,8 @@
 </template>
 
 <script>
-const axios = require('axios');
 import auth from '@/auth';
-
-const backend = axios.create({
-    baseURL: `${process.env.VUE_APP_REMOTE_API}`,
-    headers: {
-        'Authorization': "Bearer " + auth.getToken(),
-        'Content-Type': 'application/json',
-    },
-});
-
-const marvel = axios.create({
-    baseURL: 'https://gateway.marvel.com:443/v1/public/',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    params: {
-        ts:`${process.env.VUE_APP_MARVEL_API_TS}`,
-        apikey:`${process.env.VUE_APP_MARVEL_API_KEY}`,
-        hash:`${process.env.VUE_APP_MARVEL_API_HASH}`
-    }
-});
+import apiCalls from '@/apiCalls';
 
 export default {
     props: {
@@ -62,7 +42,7 @@ export default {
     },
     data() {
         return {
-            currUser: auth.getUser(),
+            currUser: null,
             profile: {
                 username: '',
                 collections: []
@@ -71,14 +51,15 @@ export default {
     },
     methods: {
         getProfileById() {
-            backend.get(`/user/${this.profileID}`)
+            apiCalls.get(`/user/${this.profileID}`)
             .then((response) => {
                 console.log(response.data);
                 this.profile.username = response.data.username;
             });
         },
         getProfileCollections() {
-            backend.get(`/collection/all/${this.profileID}`)
+            console.log(auth.getToken());
+            apiCalls.get(`/collection/all/${this.profileID}`)
             .then((response) => {
                 response.data.forEach((collection) => {
                     if (collection.public_bool == true || this.currUser.uid == collection.user_id) {
@@ -91,12 +72,13 @@ export default {
         getThumbnailForCollection(collection) {
             const firstComicIdInCollection = collection.comic_ids_in_collection[0];
             if (firstComicIdInCollection != undefined) {
-                marvel.get(`/comics/${firstComicIdInCollection}`)
+                apiCalls.marvelGet(`/comics/${firstComicIdInCollection}`)
                 .then((response) => {
                     console.log(response);
                     collection.thumbnail = response.data.data.results[0].thumbnail.path + '/portrait_medium.' + response.data.data.results[0].thumbnail.extension;
                     this.profile.collections.push(collection);
-                });
+                })
+                .catch(() => null);
             } else {
                 collection.thumbnail = '';
                 this.profile.collections.push(collection);
@@ -104,6 +86,7 @@ export default {
         },
     },
     created() {
+        this.currUser = auth.getUser();
         this.getProfileById();
         this.getProfileCollections();
     },
@@ -118,7 +101,7 @@ export default {
 #user {
     #profile {
         width: 100%;
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgb(193, 225, 231);
     }
 }
 

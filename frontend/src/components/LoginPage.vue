@@ -92,10 +92,7 @@ export default {
 
 <style lang="scss" scoped>
 #login {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-h2, form, #submittal, #submittal div {
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgb(193, 225, 231);
 }
 form {
     padding-left: 25%;

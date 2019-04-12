@@ -25,19 +25,7 @@
 </template>
 
 <script>
-const axios = require('axios');
-
-const instance = axios.create({
-  baseURL: 'https://gateway.marvel.com:443/v1/public/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  params: {
-    ts:`${process.env.VUE_APP_MARVEL_API_TS}`,
-    apikey:`${process.env.VUE_APP_MARVEL_API_KEY}`,
-    hash:`${process.env.VUE_APP_MARVEL_API_HASH}`
-  }
-});
+import apiCalls from '@/apiCalls';
 
 export default {
   data() {
@@ -47,8 +35,9 @@ export default {
   },
   methods: {
     getRecentComics() {
+
       if (localStorage.getItem('newestReleases') == null || (new Date().getTime() / 1000) - localStorage.getItem('newestReleasesTS') >= 86400 ) {
-        instance.get('/comics?dateDescriptor=thisWeek&orderBy=-onsaleDate')
+        apiCalls.marvelGet('/comics?dateDescriptor=thisWeek&orderBy=-onsaleDate')
           .then((response) => {
             for (let result of response.data.data.results) {
               let comicInfo = {};
@@ -59,17 +48,12 @@ export default {
             }
             localStorage.setItem('newestReleases', JSON.stringify(this.newestReleases));
             localStorage.setItem('newestReleasesTS', (new Date().getTime() / 1000));
-
-            console.log(localStorage.getItem('newestReleases'));
           })
           .catch((err) => console.log(err));
       } else {
         this.newestReleases = JSON.parse(localStorage.getItem('newestReleases'));
       }
     }
-  },
-  computed: {
-
   },
   mounted() {
     this.getRecentComics();
@@ -90,22 +74,16 @@ export default {
 #home {
   #main {
     width: 75%;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgb(193, 225, 231);
   }
   #sidebar {
     width: 20%;
-    background-color: rgba(255, 255, 255, 0.4);
-    * {
-      background-color: rgba(255, 255, 255, 0);
-    }
+    background-color: rgb(193, 225, 231);
   }
 
   #featured {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.4);
-    * {
-      background-color: rgba(255, 255, 255, 0);
-    }
+    background-color: rgb(193, 225, 231);
   }
 }
 </style>

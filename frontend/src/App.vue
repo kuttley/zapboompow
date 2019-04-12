@@ -31,10 +31,10 @@ export default {
   methods: {
     userLogout() {
       auth.logout();
-      this.$router.push('/login');
       this.username = '';
       this.userId = 0;
       this.loggedIn = false;
+      this.$router.push('/login');
     },
     userLoggedIn() {
         let user = auth.getUser();
@@ -55,7 +55,7 @@ export default {
   font-family: 'YanoneKaffeesatz', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #21272d;
   padding-right: 10%;
   padding-left: 10%;
 }
