@@ -42,6 +42,10 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/logout")
+    public void logout() throws UnauthorizedException {
+    	auth.logOff();
+    }
 
 
     @PostMapping("/register")

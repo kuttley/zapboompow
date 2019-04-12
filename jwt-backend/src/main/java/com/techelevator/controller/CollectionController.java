@@ -85,6 +85,7 @@ public class CollectionController {
 	            }
 	            throw new CollectionCreationException(errorMessages);
 	    	}
+	    	System.out.println(authProvider.getCurrentUser().getId());
 	    	collection.setUser_id(authProvider.getCurrentUser().getId());
 	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
 	    
