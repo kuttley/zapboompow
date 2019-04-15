@@ -1,6 +1,6 @@
 <template>
     <div id="publicCollections" class="container-fluid rounded pt-2">
-        <h2 class="text-center">All Public Collections</h2>
+        <h2>All Public Collections</h2>
         <collection-list />
     </div>
 </template>

@@ -3,7 +3,6 @@ import auth from '@/auth';
 
 export default {
     data() {
-        console.log(auth.getToken());
         return {
             backend: axios.create({
                 baseURL: `${process.env.VUE_APP_REMOTE_API}`,

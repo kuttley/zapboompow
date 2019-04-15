@@ -1,21 +1,16 @@
 <template>
-    <div id="user" class="container rounded">
+    <div id="user" class="container rounded shadow-sm pt-2">
         <vue-headful :title="title" />
-        <div class="row">
-            <div id="profile" class="col col-sm-auto pt-2 shadow-sm">
-                <div v-if="this.currUser.uid == this.profileID">
-                    <h2>Your profile</h2>
-                    <h5>Your Collections</h5>
-                </div>
-                <div v-else>
-                    <h2>{{this.profile.username}}'s profile</h2>
-                    <h5>Public Collections</h5>
-                </div>
-
-                <collection-list :profileID="this.profileID" />
-
-            </div>
+        <div v-if="this.currUser != null && this.currUser.uid == this.profileID">
+            <h2>Your profile</h2>
+            <h5>Your Collections</h5>
         </div>
+        <div v-else>
+            <h2>{{this.profile.username}}'s profile</h2>
+            <h5>Public Collections</h5>
+        </div>
+
+        <collection-list :profileID="this.profileID" />
     </div>
 </template>
 
@@ -45,7 +40,6 @@ export default {
         getProfileById() {
             apiCalls.get(`/user/${this.profileID}`)
             .then((response) => {
-                console.log(response.data);
                 this.profile.username = response.data.username;
                 this.title = "ZapBoomPow - " + this.profile.username;
             });
@@ -64,10 +58,8 @@ export default {
 }
 
 #user {
-    #profile {
-        width: 100%;
-        background-color: rgb(193, 225, 231);
-    }
+    width: 100%;
+    background-color: rgb(193, 225, 231);
 }
 
 </style>

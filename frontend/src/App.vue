@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <v-app>
     <nav-bar :loggedIn="loggedIn" :username="username" :userID="userID" v-on:logout="userLogout" />
 
     <router-view />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -52,6 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 #app {
+  background-color: #F9EBBC;
   font-family: 'YanoneKaffeesatz', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

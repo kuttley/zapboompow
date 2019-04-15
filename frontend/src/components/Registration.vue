@@ -19,8 +19,14 @@
             <input v-validate="'required|email|uniqueEmail'" type="email" name="email" id="email" class="form-control" placeholder="Email Address" v-model="user.email" required />
             <span v-show="errors.has('email')">{{errors.first('email')}}</span>
             <div>
-                <input v-validate="'required:true'" name="agecheck" id="agecheck" class="form-check-input" v-model="user.over18" type="checkbox" required />
-                <label class="form-check-label" for="agecheck">Over 18?</label>
+                <div>
+                    <input name="rolecheck" id="rolecheck" class="form-check-input" v-model="isPremiumChecked" type="checkbox" />
+                    <label class="form-check-label" for="rolecheck">Would you like to upgrade to premium?</label>
+                </div>
+                <div>
+                    <input v-validate="'required:true'" name="agecheck" id="agecheck" class="form-check-input" v-model="user.over18" type="checkbox" required />
+                    <label class="form-check-label" for="agecheck">Over 18?</label>
+                </div>
             </div>
             
             <v-layout align-center justify-space-around row fill-height wrap>
@@ -109,6 +115,20 @@ export default {
             getMessage: (field, params, data) => data.message
         });
     },
+    computed: {
+        isPremiumChecked: {
+            get() {
+                return this.user.role == 'premium';
+            },
+            set(value) {
+                if (value == true) {
+                    this.user.role = 'premium';
+                } else {
+                    this.user.role = 'standard';
+                }
+            }
+        },
+    }
 }
 </script>
 

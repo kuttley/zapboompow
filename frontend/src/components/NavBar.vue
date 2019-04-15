@@ -3,7 +3,7 @@
         <div class="row justify-content-between" height="200px">
             <router-link to="/" id="logo" class="col col-sm-auto h1"><img src="@/assets/logo.png" width="100px" alt="zapboompow"></router-link>
             <div v-if="loggedIn" class="col col-sm-auto align-self-end mb-3 mr-3 d-flex flex-column">
-              <router-link to="/collections/create" tag="button" class="btn btn-primary">Create Collection</router-link>
+              <v-btn to="/collections/create" color="primary white--text" class="text-none" small dark>Create Collection</v-btn>
               <div>
                 <router-link :to="`/user/${this.userID}`">Hi, {{this.username}}</router-link> | 
                 <router-link v-on:click.native="logout" to="/login">Logout</router-link>
@@ -50,6 +50,10 @@ export default {
     color: #f7d281;
     font-size: 3em;
     text-decoration: none;
+  }
+
+  .v-btn {
+    font-size: 1.3em;
   }
 }
 </style>

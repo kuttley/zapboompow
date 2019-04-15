@@ -35,7 +35,6 @@ export default {
                 apiCalls.get(`/collection/all/${this.profileID}`)
                     .then((response) => {
                         response.data.forEach((collection) => {
-
                             this.getThumbnailForCollection(collection);
                         })
                     });
