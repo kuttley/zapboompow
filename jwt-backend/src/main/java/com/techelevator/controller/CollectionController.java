@@ -1,5 +1,6 @@
 package com.techelevator.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class CollectionController {
 	    			return collection;
 	    		} else if(collection.getUser_id() == authProvider.getCurrentUser().getId()) {
 	    			return collection;
-	    		}else {
+	    		} else {
 		    		throw new CollectionNotFoundException(collection_id, "Can not view collection!");
 	    		}
 	    		
@@ -56,9 +57,16 @@ public class CollectionController {
 	    
 	    @RequestMapping(path="/all/{user_id}", method=RequestMethod.GET)
 	    public List<Collection> getAllCollectionsForUser(@PathVariable Long user_id) throws CollectionNotFoundException {
-	    	List<Collection> collections = collectionDao.getCollectionsByUserId(user_id);
-	    	if(collections != null) {
+	    	List<Collection> collections = null;
+	    	System.out.println(authProvider.isLoggedIn());
 	    	
+	    	if (authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == user_id) {
+	    		collections = collectionDao.getCollectionsByUserId(user_id);
+	    	} else {
+	    		collections = collectionDao.getAllPublicCollectionsForUserId(user_id);
+	    	}
+	    	
+	    	if(collections != null) {
 	    		return collections;
 	    	} else {
 	    		throw new CollectionNotFoundException(0L, "Collections not found!");
@@ -87,7 +95,7 @@ public class CollectionController {
 	    	}
 	    	
 	    	if(authProvider.getCurrentUser().getRole() != "premium" && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
-	            throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
+	    		throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
 
 	    	}
 	    	collection.setUser_id(authProvider.getCurrentUser().getId());

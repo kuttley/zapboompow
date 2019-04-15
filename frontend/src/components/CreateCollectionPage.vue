@@ -1,12 +1,13 @@
 <template>
     <div id="createCollectPage" class="container rounded shadow-sm text-center">
+        <vue-headful title="ZapBoomPow - Create New Collection" />
         <h3>Create a new Collection</h3>
         <v-layout align-center justify-center column mt-3>
             <div>
                 <form @submit.prevent="createCollection">
                     <v-text-field label="Collection Name" v-model="newCollection.collection_name" clearable name="collectionName" v-validate="'required'" box hide-details></v-text-field>
 
-                    <v-checkbox v-model="newCollection.public_bool" label="Public"></v-checkbox>
+                    <v-checkbox v-model="newCollection.public_bool" color="#21272d" hide-details label="Public"></v-checkbox>
 
                     <v-btn type='submit'>submit</v-btn>
                 </form>
@@ -40,6 +41,9 @@ export default {
                 });
         },
     },
+    created() {
+        
+    }
 }
 </script>
 

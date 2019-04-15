@@ -23,12 +23,26 @@ const router = new Router({
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      beforeEnter(to, from, next) {
+        if (auth.getUser() != null) {
+          next('/');
+        } else {
+          next();
+        }
+      }
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      beforeEnter(to, from, next) {
+        if (auth.getUser() != null) {
+          next('/');
+        } else {
+          next();
+        }
+      }
     },
     {
       path: '/user/:id',
@@ -42,7 +56,14 @@ const router = new Router({
     },
     {
       path: '/collections/create',
-      component: CollectionCreate
+      component: CollectionCreate,
+      beforeEnter(to, from, next) {
+        if (auth.getUser() != null) {
+          next();
+        } else {
+          next('/login');
+        }
+      }
     },
     {
       path: '/collections/:id',
@@ -50,23 +71,5 @@ const router = new Router({
     },
   ]
 })
-
-
-router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login', '/register'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = auth.getUser();
-
-  if (!authRequired && loggedIn) {
-    return next('/');
-  }
-
-  if (authRequired && !loggedIn) {
-    return next('/login');
-  }
-
-  next();
-});
 
 export default router;

@@ -3,6 +3,7 @@ package com.techelevator.model;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -11,8 +12,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * User
  */
 public class User {
-	@Min(6)
-	@Max(30)
+	
+	@Size(min=6, max=30, message="Username must be between 6 and 30 characters.")
     @NotBlank(message="Username is required")
     private String username;
    
@@ -24,11 +25,11 @@ public class User {
     private String role;
     private long id;
 
+    @Size(min=4, max=32, message="Password must be between 4 and 32 characters.")
 	@NotBlank(message="Password is required")
     private String password;
     private String confirmPassword;
 
-    private boolean passwordMatching;
     @AssertTrue(message = "Passwords must match")
     public boolean isPasswordMatching() {
         if (password != null) {

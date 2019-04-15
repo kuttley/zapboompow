@@ -1,20 +1,23 @@
 <template>
-    <collection-list :public="searchingPublic"  />
+    <div id="publicCollections" class="container-fluid rounded pt-2">
+        <h2 class="text-center">All Public Collections</h2>
+        <collection-list />
+    </div>
 </template>
 
 <script>
 import CollectionList from '@/components/CollectionList.vue';
 
 export default {
-    props: {
-        searchingPublic: Boolean,
-    },
     components: {
         CollectionList,
     }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+#publicCollections {
+    background-color: rgb(193, 225, 231);
+}
 </style>
+

@@ -9,7 +9,7 @@
                 <router-link v-on:click.native="logout" to="/login">Logout</router-link>
               </div>
             </div>
-            <div v-else class="col col-sm-auto">
+            <div v-else class="col col-sm-auto align-self-end mb-3 mr-3">
                 <router-link to="/register">Register</router-link> | 
                 <router-link to="/login">Login</router-link>
             </div>

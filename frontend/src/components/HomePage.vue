@@ -1,23 +1,33 @@
 <template>
-  <div id="home" class="container">
-    <div class="row justify-content-between mb-3">
-      <div id="main" class="col col-sm-auto rounded pt-2 shadow-sm">
+  <div id="home" class="container-fluid">
+    <vue-headful title="ZapBoomPow - Home" />
+    <div class="row wrap justify-content-between">
+
+      <div id="main" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
         <h2>Recent Comic Releases</h2>
-        <v-carousel hide-delimiters height="250" dark class="mb-3">
+
+        <v-carousel hide-delimiters height="290" dark class="mt-3">
           <v-carousel-item v-for="comic in newestReleases" v-bind:key="comic.id">
             <v-img :src="comic.thumbnail" height="216" contain></v-img>
-            <h3 class="text-center">{{comic.title}}</h3>
+            <h4 class="text-center pt-2">{{comic.title}}</h4>
           </v-carousel-item>
-
         </v-carousel>
       </div>
-      <div id="sidebar" class="col col-sm-auto rounded pt-2 shadow-sm">
-        <h5 class="text-center">All Collections Stats</h5>
+
+      <div id="sidebar" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
+        <h3 class="text-center">All Collections Stats</h3>
       </div>
     </div>
+
     <div class="row">    
       <div id="featured" class="col col-sm-auto rounded pt-2 shadow-sm">
-        <h3>Featured Collections</h3>
+        <h2>Featured Collections</h2>
+        <collection-list />
+
+        <div class="d-flex flex-column justify-content-sm-center align-items-md-end mb-3">
+          <router-link to="/collections" tag="button" class="btn btn-lg btn-success">View All</router-link>
+        </div>
+
       </div>
     </div>
 
@@ -26,8 +36,12 @@
 
 <script>
 import apiCalls from '@/apiCalls';
+import CollectionList from '@/components/CollectionList.vue';
 
 export default {
+  components: {
+    CollectionList
+  },
   data() {
     return {
       newestReleases: [],
@@ -63,9 +77,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.container {
-  margin-left: 0;
-}
 
 .v-carousel {
   box-shadow: none!important;

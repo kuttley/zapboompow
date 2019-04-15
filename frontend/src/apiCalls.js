@@ -3,19 +3,20 @@ import auth from '@/auth';
 
 export default {
     data() {
+        console.log(auth.getToken());
         return {
             backend: axios.create({
                 baseURL: `${process.env.VUE_APP_REMOTE_API}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + auth.getToken()
+                    'Authorization': 'Bearer ' + auth.getToken() 
                 }
             }),
             
             marvel: axios.create({
                 baseURL: 'https://gateway.marvel.com:443/v1/public/',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 params: {
                     ts:`${process.env.VUE_APP_MARVEL_API_TS}`,

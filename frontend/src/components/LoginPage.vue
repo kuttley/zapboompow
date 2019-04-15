@@ -1,45 +1,46 @@
 <template>
     <div id="login" class="text-center">
-        <h2>Login</h2>
-        <form @submit.prevent="login" class="pt-3 pb-3 rounded">
-            <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
-                Invalid username and password!
-            </div>
-            <div class="alert alert-success" role="alert" v-if="this.$route.query.registration">
-                Thank you for registering, please sign in.
-            </div>
-            <label for="username" class="sr-only">Username</label>
-            <input
-                type="text"
-                id="username"
-                class="form-control"
-                placeholder="Username"
-                v-model="user.username"
-                required
-                autofocus
-            />
-            <label for="password" class="sr-only">Password</label>
-            <input
-                type="password"
-                id="password"
-                class="form-control"
-                placeholder="Password"
-                v-model="user.password"
-                required
-            />
-            <div id="submittal" class="row justify-content-center">
-                <div class="col col-sm-auto align-self-center">
-                    <router-link :to="{ name: 'register' }">
-                        Need an account?
-                    </router-link>
-                </div>
-                <div class="col col-sm-auto">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Sign in
-                    </button>
-                </div>
-            </div>
-        </form>
+      <vue-headful title="ZapBoomPow - Login" />
+      <h2>Login</h2>
+      <form @submit.prevent="login" class="pt-3 pb-3 rounded">
+          <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
+              Invalid username and password!
+          </div>
+          <div class="alert alert-success" role="alert" v-if="this.$route.query.registration">
+              Thank you for registering, please sign in.
+          </div>
+          <label for="username" class="sr-only">Username</label>
+          <input
+              type="text"
+              id="username"
+              class="form-control"
+              placeholder="Username"
+              v-model="user.username"
+              required
+              autofocus
+          />
+          <label for="password" class="sr-only">Password</label>
+          <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Password"
+              v-model="user.password"
+              required
+          />
+          <div id="submittal" class="row justify-content-center">
+              <div class="col col-sm-auto align-self-center">
+                  <router-link :to="{ name: 'register' }">
+                      Need an account?
+                  </router-link>
+              </div>
+              <div class="col col-sm-auto">
+                  <button class="btn btn-lg btn-primary btn-block" type="submit">
+                      Sign in
+                  </button>
+              </div>
+          </div>
+      </form>
     </div>
 </template>
 

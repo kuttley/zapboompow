@@ -39,4 +39,6 @@ public interface UserDao {
     
     public User getOtherUserById(Long id);
 
+	public User getUserByEmail(String email);
+
 }

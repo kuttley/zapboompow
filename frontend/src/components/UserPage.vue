@@ -1,5 +1,6 @@
 <template>
     <div id="user" class="container rounded">
+        <vue-headful :title="title" />
         <div class="row">
             <div id="profile" class="col col-sm-auto pt-2 shadow-sm">
                 <div v-if="this.currUser.uid == this.profileID">
@@ -11,21 +12,7 @@
                     <h5>Public Collections</h5>
                 </div>
 
-                <v-container fluid grid-list-md>
-                    <v-layout row wrap justify-center>
-                        <v-flex v-for="collection in profile.collections" :key="collection.collection_id" md2 sm5 xs12>
-                            <v-card class="pt-3">
-                                <v-img :src="collection.thumbnail" height="150" contain></v-img>
-                                <v-card-title primary-title class="text-center justify-content-center">
-                                    <div>
-                                        <h4 class="mb-0">{{collection.collection_name}}</h4>
-                                        <div>{{collection.comic_ids_in_collection.length}} comic{{(collection.comic_ids_in_collection.length > 1 || collection.comic_ids_in_collection.length == 0) ? 's' : ''}} in collection</div>
-                                    </div>
-                                </v-card-title>
-                            </v-card>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
+                <collection-list :profileID="this.profileID" />
 
             </div>
         </div>
@@ -35,13 +22,18 @@
 <script>
 import auth from '@/auth';
 import apiCalls from '@/apiCalls';
+import CollectionList from '@/components/CollectionList.vue';
 
 export default {
+    components: {
+        CollectionList
+    },
     props: {
         profileID: String,
     },
     data() {
         return {
+            title: '',
             currUser: null,
             profile: {
                 username: '',
@@ -55,40 +47,13 @@ export default {
             .then((response) => {
                 console.log(response.data);
                 this.profile.username = response.data.username;
+                this.title = "ZapBoomPow - " + this.profile.username;
             });
-        },
-        getProfileCollections() {
-            console.log(auth.getToken());
-            apiCalls.get(`/collection/all/${this.profileID}`)
-            .then((response) => {
-                response.data.forEach((collection) => {
-                    if (collection.public_bool == true || this.currUser.uid == collection.user_id) {
-                        console.log(collection);
-                        this.getThumbnailForCollection(collection);
-                    }
-                })
-            });
-        },
-        getThumbnailForCollection(collection) {
-            const firstComicIdInCollection = collection.comic_ids_in_collection[0];
-            if (firstComicIdInCollection != undefined) {
-                apiCalls.marvelGet(`/comics/${firstComicIdInCollection}`)
-                .then((response) => {
-                    console.log(response);
-                    collection.thumbnail = response.data.data.results[0].thumbnail.path + '/portrait_medium.' + response.data.data.results[0].thumbnail.extension;
-                    this.profile.collections.push(collection);
-                })
-                .catch(() => null);
-            } else {
-                collection.thumbnail = '';
-                this.profile.collections.push(collection);
-            }
         },
     },
     created() {
         this.currUser = auth.getUser();
         this.getProfileById();
-        this.getProfileCollections();
     },
 }
 </script>

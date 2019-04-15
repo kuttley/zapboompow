@@ -7,6 +7,7 @@
                     <v-card-title primary-title class="text-center justify-content-center">
                         <div>
                             <h4 class="mb-0">{{collection.collection_name}}</h4>
+                            <p v-if="profileID == null" class="mb-1">{{collection.username}}</p>
                             <div>{{collection.comic_ids_in_collection.length}} comic{{(collection.comic_ids_in_collection.length > 1 || collection.comic_ids_in_collection.length == 0) ? 's' : ''}} in collection</div>
                         </div>
                     </v-card-title>
@@ -17,30 +18,12 @@
 </template>
 
 <script>
-const axios = require('axios');
-import auth from '@/auth';
-
-const backend = axios.create({
-    baseURL: `${process.env.VUE_APP_REMOTE_API}`,
-    headers: {
-        'Authorization': "Bearer " + auth.getToken(),
-        'Content-Type': 'application/json',
-    },
-});
-
-const marvel = axios.create({
-    baseURL: 'https://gateway.marvel.com:443/v1/public/',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    params: {
-        ts:`${process.env.VUE_APP_MARVEL_API_TS}`,
-        apikey:`${process.env.VUE_APP_MARVEL_API_KEY}`,
-        hash:`${process.env.VUE_APP_MARVEL_API_HASH}`
-    }
-});
+import apiCalls from '@/apiCalls';
 
 export default {
+    props: {
+        profileID: String,
+    },
     data() {
         return {
             collections: [],
@@ -48,22 +31,32 @@ export default {
     },
     methods: {
         getCollectionList() {
-            backend.get(`/collection/all`)
-            .then((response) => {
-                response.data.forEach((collection) => {
-                    if (collection.public_bool == true || this.currUser.uid == collection.user_id) {
-                        console.log(collection);
-                        this.getThumbnailForCollection(collection);
-                    }
-                })
-            });
+            if (this.profileID != null) {
+                apiCalls.get(`/collection/all/${this.profileID}`)
+                    .then((response) => {
+                        response.data.forEach((collection) => {
+
+                            this.getThumbnailForCollection(collection);
+                        })
+                    });
+            } else {
+                apiCalls.get(`/collection/all`)
+                    .then((response) => {
+                        response.data.forEach((collection) => {
+                            apiCalls.get(`/user/${collection.user_id}`)
+                                .then((response) => {
+                                    collection.username = response.data.username;
+                                    this.getThumbnailForCollection(collection);
+                                });
+                        });
+                    });
+            }
         },
         getThumbnailForCollection(collection) {
             const firstComicIdInCollection = collection.comic_ids_in_collection[0];
             if (firstComicIdInCollection != undefined) {
-                marvel.get(`/comics/${firstComicIdInCollection}`)
+                apiCalls.marvelGet(`/comics/${firstComicIdInCollection}`)
                 .then((response) => {
-                    console.log(response);
                     collection.thumbnail = response.data.data.results[0].thumbnail.path + '/portrait_medium.' + response.data.data.results[0].thumbnail.extension;
                     this.collections.push(collection);
                 });
@@ -73,6 +66,9 @@ export default {
             }
         },
     },
+    created() {
+        this.getCollectionList();
+    }
 }
 </script>
 

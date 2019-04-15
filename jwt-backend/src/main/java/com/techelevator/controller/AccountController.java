@@ -51,7 +51,14 @@ public class AccountController {
     @PostMapping("/register")
     public RegistrationResult register(@Valid @RequestBody User user, BindingResult result) {
     	RegistrationResult registrationResult = new RegistrationResult();
-    	if(result.hasErrors()) {
+		if (userDao.getUserByUsername(user.getUsername()) != null) {
+        	result.addError(new ObjectError("username", "There is already a user account with that name."));
+        } 
+		if (userDao.getUserByEmail(user.getEmail()) != null) {
+        	result.addError(new ObjectError("email", "There is already a user account with that email."));
+		}
+		
+		if(result.hasErrors()) {
             for(ObjectError error : result.getAllErrors()) {
                 registrationResult.addError(error.getDefaultMessage());
             }
@@ -67,19 +74,41 @@ public class AccountController {
     @RequestMapping(path="/user/{id}", method=RequestMethod.GET)
     public User getUser(@PathVariable Long id) throws UserNotFoundException {
     	User currentUser = auth.getCurrentUser();
-    	if (currentUser.getId() == id) {
+    	if (currentUser != null && currentUser.getId() == id) {
     		return currentUser;
     	}
     	else {
-    	User user = userDao.getOtherUserById(id);
-    	
-    	if(user != null ) {
-    		return user;
-    	} else {
-    		throw new UserNotFoundException(id, "User not found!");
+	    	User user = userDao.getOtherUserById(id);
+	    	
+	    	if(user != null ) {
+	    		return user;
+	    	} else {
+	    		throw new UserNotFoundException(id, "User not found!");
+	    	}
+	    	
     	}
-    	
     }
+    
+    @PostMapping("/api/validate/email")
+    public boolean userWithEmailExists(@RequestBody String email) {
+    	User user = userDao.getUserByEmail(email);
+    	
+    	if (user != null) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    @PostMapping("/api/validate/username")
+    public boolean userWithUsernameExists(@RequestBody String username) {
+    	User user = userDao.getUserByUsername(username);
+    	
+    	if (user != null) {
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
 }

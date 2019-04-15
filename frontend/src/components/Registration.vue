@@ -1,30 +1,39 @@
 <template>
     <div id="registration" class="text-center">
+        <vue-headful title="ZapBoomPow - Registration" />
         <h2>Create Account</h2>
         <form @submit.prevent="register" class="pt-3 pb-3 rounded">
-            <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-                There were problems with registering your account, see below.
+            <div class="alert alert-danger" role="alert" v-if="registrationErrors.length > 0">
+                There were problems with registering your account.
+                <p v-for="error in registrationErrors" :key="error" class="mb-0">{{error}}</p>
             </div>
             <label for="username" class="sr-only">Username</label>
-            <input v-validate="'required'" data-vv-as="username" v-model="user.username" type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus />
-            <span v-show="errors.has('username')" class="help is-danger">{{errors.first('username')}}</span>
+            <input v-validate="'required|uniqueUsername|length:6,30'" data-vv-as="username" v-model="user.username" type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus />
+            <span>{{errors.first('username')}}</span>
             <label for="password" class="sr-only">Password</label>
-            <input v-validate="'required'" v-model="user.password" type="password" id="password" name="password" ref="password" class="form-control" placeholder="Password" required />
+            <input v-validate="'required|length:4,32'" v-model="user.password" type="password" id="password" name="password" ref="password" class="form-control" placeholder="Password" required />
             <span v-show="errors.has('password')">{{errors.first('password')}}</span>
-            <input v-validate="'required|confirmed:password'" v-model="user.confirmPassword" type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required />
+            <input v-validate="'required|confirmed:password|length:4,32'" v-model="user.confirmPassword" type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required />
             <span v-show="errors.has('confirmPassword')">The passwords do not match.</span>
             <label for="email" class="sr-only">Email Address</label>
-            <input type="email" id="email" class="form-control" placeholder="Email Address" v-model="user.email" required />
+            <input v-validate="'required|email|uniqueEmail'" type="email" name="email" id="email" class="form-control" placeholder="Email Address" v-model="user.email" required />
+            <span v-show="errors.has('email')">{{errors.first('email')}}</span>
+            <div>
+                <input v-validate="'required:true'" name="agecheck" id="agecheck" class="form-check-input" v-model="user.over18" type="checkbox" required />
+                <label class="form-check-label" for="agecheck">Over 18?</label>
+            </div>
             
-            
-            <router-link :to="{ name: 'login'}">Have an account?</router-link>
-            <button :disabled="errors.any()" class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+            <v-layout align-center justify-space-around row fill-height wrap>
+                <router-link :to="{ name: 'login'}">Have an account?</router-link>
+                <button :disabled="errors.any()" class="btn btn-lg btn-primary" type="submit">Create Account</button>
+            </v-layout>
         </form>
     </div>
 </template>
 
 <script>
 import apiCalls from '@/apiCalls';
+import { Validator } from 'vee-validate';
 
 export default {
     data() {
@@ -35,22 +44,71 @@ export default {
                 confirmPassword: '',
                 role: 'standard',
                 email: '',
+                over18: false,
             },
-            registrationErrors: false,
+            registrationErrors: [],
         }
     },
     methods: {
         register() {
             apiCalls.post('/register', this.user)
                 .then((response) => {
-                    if (response.ok) {
+                    console.log(response.data);
+                    if (response.data.success) {
                         this.$router.push({ path: '/login', query: { registration: 'success' } });
                     } else {
-                        this.registrationErrors = true;
+                        this.registrationErrors = response.data.errors;
                     }
-                })
+                });
         }
-    }
+    },
+    mounted() {
+        const isEmailUnique = (value) => {
+            return apiCalls.post(`/api/validate/email`, value)
+                .then((response) => {
+                    if (response.data == true) {
+                        return { 
+                            valid: false,
+                            data: {
+                                message: `${value} is already taken.`
+                            }
+                        }
+                    } else {
+                        return {
+                            valid: true
+                        }
+                    }
+                });
+        };
+
+        const isUsernameUnique = (value) => {
+            return apiCalls.post(`/api/validate/username`, value)
+                .then((response) => {
+                    if (response.data == true) {
+                        return { 
+                            valid: false,
+                            data: {
+                                message: `${value} is already taken.`
+                            }
+                        }
+                    } else {
+                        return {
+                            valid: true
+                        }
+                    }
+                });
+        };
+
+        Validator.extend("uniqueEmail", {
+            validate: isEmailUnique,
+            getMessage: (field, params, data) => data.message
+        });
+
+        Validator.extend("uniqueUsername", {
+            validate: isUsernameUnique,
+            getMessage: (field, params, data) => data.message
+        });
+    },
 }
 </script>
 

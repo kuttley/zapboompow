@@ -136,6 +136,18 @@ public class JdbcUserDao implements UserDao {
             return null;
         }
     }
+    
+    @Override
+    public User getUserByEmail(String email) {
+    	String sqlSelectUserByEmail = "SELECT user_id, username, role, email FROM users WHERE email = ?";
+    	SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserByEmail, email);
+    	
+    	if (results.next()) {
+    		return mapResultToUser(results);
+    	} else {
+    		return null;
+    	}
+    }
 
 	@Override
 	public User getOtherUserById(Long id) {
