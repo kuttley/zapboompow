@@ -5,9 +5,10 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import User from '@/views/User.vue';
 import auth from './auth';
-import CollectionList from '@/views/CollectionList';
-import CollectionCreate from '@/views/CollectionCreate';
-import Collection from '@/views/Collection';
+import CollectionList from '@/views/CollectionList.vue';
+import CollectionCreate from '@/views/CollectionCreate.vue';
+import Collection from '@/views/Collection.vue';
+import Comic from '@/views/Comic.vue';
 
 Vue.use(Router)
 
@@ -68,6 +69,10 @@ const router = new Router({
     {
       path: '/collections/:id',
       component: Collection
+    },
+    {
+      path: '/comic/:id',
+      component: Comic,
     },
   ]
 })

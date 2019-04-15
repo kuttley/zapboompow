@@ -9,7 +9,6 @@ import UserPage from '@/components/UserPage.vue';
 
 export default {
     props: {
-        userID: String,
         profileID: String,
     },
     components: {

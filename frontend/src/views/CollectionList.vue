@@ -1,5 +1,5 @@
 <template>
-    <div id="publicCollections" class="container-fluid rounded pt-2">
+    <div id="publicCollections" class="container-fluid rounded pt-2 shadow-sm">
         <h2>All Public Collections</h2>
         <collection-list />
     </div>
