@@ -58,7 +58,6 @@ public class CollectionController {
 	    @RequestMapping(path="/all/{user_id}", method=RequestMethod.GET)
 	    public List<Collection> getAllCollectionsForUser(@PathVariable Long user_id) throws CollectionNotFoundException {
 	    	List<Collection> collections = null;
-	    	System.out.println(authProvider.isLoggedIn());
 	    	
 	    	if (authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == user_id) {
 	    		collections = collectionDao.getCollectionsByUserId(user_id);
@@ -94,7 +93,7 @@ public class CollectionController {
 	            throw new CollectionCreationException(errorMessages);
 	    	}
 	    	
-	    	if(authProvider.getCurrentUser().getRole() != "premium" && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
+	    	if(authProvider.getCurrentUser().getRole().equals("standard") && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
 	    		throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
 
 	    	}
