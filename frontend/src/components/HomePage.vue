@@ -71,6 +71,7 @@ export default {
           .catch((err) => console.log(err));
       } else {
         this.newestReleases = JSON.parse(localStorage.getItem('newestReleases'));
+        this.loading = false;
       }
     }
   },

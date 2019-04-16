@@ -58,12 +58,12 @@ export default {
                 apiCalls.marvelGet(`/comics/${firstComicIdInCollection}`)
                     .then((response) => {
                         collection.thumbnail = response.data.data.results[0].thumbnail.path + '/portrait_medium.' + response.data.data.results[0].thumbnail.extension;
-                        this.collections.push(collection)
+                        this.collections.push(collection);
+                    })
                     .catch(() => {
                         collection.thumbnail = '';
                         this.collections.push(collection);  
                     });
-                });
             } else {
                 collection.thumbnail = '';
                 this.collections.push(collection);
