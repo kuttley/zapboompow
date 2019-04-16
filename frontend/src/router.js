@@ -9,6 +9,8 @@ import CollectionList from '@/views/CollectionList.vue';
 import CollectionCreate from '@/views/CollectionCreate.vue';
 import Collection from '@/views/Collection.vue';
 import Comic from '@/views/Comic.vue';
+import Search from '@/views/Search.vue';
+
 
 Vue.use(Router)
 
@@ -74,6 +76,11 @@ const router = new Router({
       path: '/comic/:id',
       component: Comic,
     },
+    {
+      path: '/search',
+      component: Search,
+      props: true
+    }
   ]
 })
 
