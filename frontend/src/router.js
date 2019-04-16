@@ -71,7 +71,7 @@ const router = new Router({
     },
     {
       path: '/collections/:id',
-      component: Collection
+      component: Collection,
     },
     {
       path: '/comic/:id',

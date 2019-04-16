@@ -2,11 +2,15 @@
     <div id="nav" class="container-fluid align-items-center rounded-bottom shadow">
         <div class="row justify-content-between" height="200px">
           <router-link to="/" id="logo" class="col col-sm-auto h1"><img src="@/assets/logo.png" width="100px" alt="zapboompow"></router-link>
-          <form method="GET" class="form-inline">
-            <v-text-field label="Search For Comic By Name" solo-inverted v-model="searchComicName" v-on:keyup.enter="searchSubmit"></v-text-field>
-            <v-text-field label="Issue Number" append-icon="search" solo-inverted v-model="searchIssueNumber" v-on:keyup.enter="searchSubmit"></v-text-field>
-            <v-btn color="primary" flat :to="{ name:'search', query: { 'title': searchComicName,  'issueNumber': searchIssueNumber} }" name='submit' type='search' value="Search">Submit</v-btn>
-          </form>
+          <div class="col col-sm-auto align-self-center">
+            <form method="GET" class="form-inline">
+              <div class="row align-self-center">
+              <v-text-field label="Search For Comic By Name" solo-inverted v-model="searchComicName" v-on:keyup.enter="searchSubmit"></v-text-field>
+              <v-text-field label="Issue Number" append-icon="search" solo-inverted v-model="searchIssueNumber" v-on:keyup.enter="searchSubmit"></v-text-field>
+              <v-btn color="primary white--text" class="text-none" dark :to="{ name:'search', query: { 'title': searchComicName,  'issueNumber': searchIssueNumber} }" name='submit' type='search' value="Search">Submit</v-btn>
+              </div>
+            </form>
+          </div>
           <div v-if="loggedIn" class="col col-sm-auto align-self-end mb-3 mr-3 d-flex flex-column">
             <v-btn to="/collections/create" color="primary white--text" class="text-none" small dark>Create Collection</v-btn>
             <div>
@@ -39,7 +43,7 @@ export default {
         logout() {
             this.$emit('logout');
         },
-        searchSubmit() {
+        searchSubmit() { 
           this.$router.push({ name:'search', query: { 'title': this.searchComicName,  'issueNumber': this.searchIssueNumber} });
         },
     }

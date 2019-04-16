@@ -78,10 +78,11 @@ export default {
     },
     created() {
         this.currUser = auth.getUser();
-        this.getUserCollections();
+        if (this.currUser != null) {
+            this.getUserCollections();
+        }
         apiCalls.marvelGet(`/comics/${this.$route.params.id}`)
             .then((response) => {
-                console.log(response);
                 let comicData = response.data.data.results[0];
                 this.comic.title = comicData.title;
                 if (comicData.images.length < 1) {
