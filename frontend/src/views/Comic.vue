@@ -8,6 +8,7 @@ import ComicDetails from '@/components/ComicDetails.vue';
 export default {
     props: {
         comicID: String,
+        userID: String,
     },
     components: {
         ComicDetails,

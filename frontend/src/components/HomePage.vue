@@ -7,9 +7,12 @@
         <h2>Recent Comic Releases</h2>
 
         <v-carousel hide-delimiters height="290" dark class="mt-3">
-          <v-carousel-item v-for="comic in newestReleases" v-bind:key="comic.id">
-            <v-img :src="comic.thumbnail" height="216" contain></v-img>
-            <h4 class="text-center pt-2">{{comic.title}}</h4>
+          <v-carousel-item v-if="loading"><h4 class="text-center">Loading...</h4></v-carousel-item>
+          <v-carousel-item v-else v-for="comic in newestReleases" v-bind:key="comic.id">
+            <router-link :to="`/comic/${comic.id}`">
+              <v-img :src="comic.thumbnail" height="216" contain></v-img>
+              <h4 class="text-center pt-2 grey--text text--darken-4">{{comic.title}}</h4>
+            </router-link>
           </v-carousel-item>
         </v-carousel>
       </div>
@@ -45,6 +48,7 @@ export default {
   data() {
     return {
       newestReleases: [],
+      loading: true,
     }
   },
   methods: {
@@ -62,6 +66,7 @@ export default {
             }
             localStorage.setItem('newestReleases', JSON.stringify(this.newestReleases));
             localStorage.setItem('newestReleasesTS', (new Date().getTime() / 1000));
+            this.loading = false;
           })
           .catch((err) => console.log(err));
       } else {
