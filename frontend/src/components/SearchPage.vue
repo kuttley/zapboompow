@@ -11,22 +11,16 @@
               :key="comic.id"
             >
               <v-card>
+                 <router-link :to="`/comic/${comic.id}`">
                 <v-img
-                  :src="comic.image"
+                  :src="comic.thumbnail.path + '/portrait_medium.' + comic.thumbnail.extension"
                   height="200px"
-                >
-                  <v-container
-                    fill-height
-                    fluid
-                    pa-2
-                  >
-                    <v-layout fill-height>
-                      <v-flex xs12 align-end flexbox>
-                        <span class="headline white--text" v-text="comic.title"></span>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
+                  contain>
                 </v-img>
+                <v-card-title primary-title class="text-center justify-content-center">
+                <h4>{{ comic.title }}</h4>
+                </v-card-title>
+                 </router-link>
               </v-card>
             </v-flex>
           </v-layout>
@@ -40,23 +34,25 @@
 import apiCalls from '@/apiCalls';
 
 export default {
-props: {
-  searchComicName: String,
-  searchIssueNumber: String
-
-},
-
-    data() {
+ 
+  data() {
     return {
-      comics: []
-      
+      comics: [], 
+      searchComicName: this.$route.query.title,
+      searchIssueNumber: this.$route.query.issueNumber
     };
+  },
+  methods: {
+    getComics() {
+        apiCalls.marvelGet(`/comics?title=${this.searchComicName}&issueNumber=${this.searchIssueNumber}`)
+          .then((parsedData) => {
+            console.log(parsedData);
+            this.comics = parsedData.data.data.results;
+          });
     },
-    methods: {
-    getComics(){
-            apiCalls.marvelGet(`/comics?title=${this.searchComicName}&issueNumber=${this.searchIssueNumber}`)
-            .then(parsedData => this.comics = parsedData.data.results);
-        }
+  },
+  created() {
+    this.getComics();
   }
 };
 

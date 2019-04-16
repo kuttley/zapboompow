@@ -79,6 +79,7 @@ const router = new Router({
     {
       path: '/search',
       component: Search,
+      name: 'search',
       props: true
     }
   ]

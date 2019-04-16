@@ -3,11 +3,12 @@
 </template>
 
 <script>
-  import SearchPage from '../components/SearchPage'
+  import SearchPage from '@/components/SearchPage';
 
   export default {
     components: {
-      SearchPage
+      SearchPage,
+      
     }
   }
 </script>
