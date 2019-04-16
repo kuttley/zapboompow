@@ -105,6 +105,8 @@ public class CollectionController {
 	    
 	    @RequestMapping(path="/add", method=RequestMethod.POST)
 	    public void addComic(@Valid @RequestBody ComicCollection comicCollection, BindingResult result) throws CollectionNotFoundException {
+	    	Long il = comicCollection.getCollection_id();
+	    	if(authProvider.getCurrentUser().getId() == collectionDao.findById(il)))
 
 	    	if(result.hasErrors()) {
 	            String errorMessages = "";
