@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     getComics() {
-        apiCalls.marvelGet(`/comics?title=${this.searchComicName}&issueNumber=${this.searchIssueNumber}`)
+        apiCalls.marvelGet(`/comics?${this.searchComicName.length > 0 ? 'title=' + this.searchComicName : '' }${this.searchIssueNumber.length > 0 ? '&issueNumber=' + this.searchIssueNumber : ''}`)
           .then((parsedData) => {
             this.comics = parsedData.data.data.results;
             this.loading = false;
