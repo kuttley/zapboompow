@@ -2,7 +2,7 @@
   <v-app>
     <nav-bar :loggedIn="loggedIn" :username="username" :userID="userID" v-on:logout="userLogout" />
 
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </v-app>
 </template>
 

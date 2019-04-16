@@ -10,6 +10,7 @@ import CollectionCreate from '@/views/CollectionCreate.vue';
 import Collection from '@/views/Collection.vue';
 import Comic from '@/views/Comic.vue';
 import Search from '@/views/Search.vue';
+import PageNotFound from '@/views/PageNotFound.vue';
 
 
 Vue.use(Router)
@@ -81,6 +82,10 @@ const router = new Router({
       component: Search,
       name: 'search',
       props: true
+    },
+    {
+      path: '*',
+      component: PageNotFound
     }
   ]
 })

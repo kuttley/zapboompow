@@ -40,7 +40,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws IOException, ServletException {
-    	System.out.println("auth: " + request.getHeader(AUTHORIZATION_HEADER));
         if((request.getHeader(AUTHORIZATION_HEADER) == null || request.getHeader(AUTHORIZATION_HEADER).contains("null")) && (excludedUrls.contains(request.getRequestURI().replaceFirst(request.getContextPath(), "").replaceFirst("/[0-9]+", "")) || request.getMethod().equals("OPTIONS")) ) {
             System.out.println("anon user");
         	return true;

@@ -1,7 +1,8 @@
 <template>
     <div id="comicDetails" class="container-fluid rounded py-2 shadow-sm">
-        <!-- <div v-if="loading">Loading...</div> -->
-        <div class="row px-2">
+        <vue-headful :title="'ZapBoomPow - ' + comic.title" />
+        <div v-if="loading">Loading...</div>
+        <div v-else class="row px-2">
             <div>
                 <v-img :src="comic.image" contain width="550px" height="845px"></v-img>
             </div>
@@ -13,7 +14,7 @@
                         <h5 class="font-weight-bold">Published:</h5>
                         <h5>{{this.comic.publishedDate.toLocaleString('en-us', { month: 'long', year: 'numeric', day: 'numeric'})}}</h5>
                     </div>
-                    <div class="mr-auto ml-auto" v-for="creator in this.comic.creators" :key="creator.role">
+                    <div class="mr-auto ml-auto" v-for="(creator, i) in this.comic.creators" :key="i">
                         <h5 class="font-weight-bold">{{creator.role}}:</h5>
                         <h5>{{creator.name}}</h5>
                     </div>
@@ -80,16 +81,22 @@ export default {
         this.getUserCollections();
         apiCalls.marvelGet(`/comics/${this.$route.params.id}`)
             .then((response) => {
+                console.log(response);
                 let comicData = response.data.data.results[0];
                 this.comic.title = comicData.title;
-                this.comic.image = comicData.images[0].path + "/clean." + comicData.images[0].extension;
+                if (comicData.images.length < 1) {
+                    this.comic.image = comicData.thumbnail.path + "/detail." + comicData.thumbnail.extension;
+                } else {
+                    this.comic.image = comicData.images[0].path + "/detail." + comicData.images[0].extension;
+                }
                 this.comic.description = comicData.description;
                 this.comic.publishedDate = new Date(comicData.dates[0].date);
                 comicData.creators.items.forEach(element => {
                     this.comic.creators.push({ name: element.name, role: element.role });
                 });
                 this.loading = false;
-            });
+            })
+            .catch(() => this.$router.push('/404'));
     }
 }
 </script>

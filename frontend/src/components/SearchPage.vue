@@ -1,43 +1,36 @@
 <template>
     <div id="searchPage" class="container-fluid rounded py-2 shadow-sm">
-<v-card>
-        <v-container
-          fluid
-          grid-list-md
-        >
-          <v-layout row wrap>
-            <v-flex
-              v-for="comic in comics"
-              :key="comic.id"
-            >
-              <v-card>
-                 <router-link :to="`/comic/${comic.id}`">
-                <v-img
-                  :src="comic.thumbnail.path + '/portrait_medium.' + comic.thumbnail.extension"
-                  height="200px"
-                  contain>
-                </v-img>
-                <v-card-title primary-title class="text-center justify-content-center">
-                <h4>{{ comic.title }}</h4>
-                </v-card-title>
-                 </router-link>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+      <div v-if="loading">Loading...</div>
+      <div v-else>
+        <v-card>
+          <v-container fluid grid-list-md>
+            <v-layout row wrap>
+              <v-flex v-for="comic in comics" :key="comic.id">
+                <v-card>
+                  <router-link :to="`/comic/${comic.id}`">
+                    <v-img :src="comic.thumbnail.path + '/portrait_medium.' + comic.thumbnail.extension" height="200px" contain></v-img>
+                    <v-card-title primary-title class="text-center justify-content-center">
+                      <h4>{{ comic.title }}</h4>
+                    </v-card-title>
+                  </router-link>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+      </div>
     </div>
 </template>
 
 <script>
-
 import apiCalls from '@/apiCalls';
 
 export default {
  
   data() {
     return {
-      comics: [], 
+      comics: [],
+      loading: true,
       searchComicName: this.$route.query.title,
       searchIssueNumber: this.$route.query.issueNumber
     };
@@ -46,8 +39,8 @@ export default {
     getComics() {
         apiCalls.marvelGet(`/comics?title=${this.searchComicName}&issueNumber=${this.searchIssueNumber}`)
           .then((parsedData) => {
-            console.log(parsedData);
             this.comics = parsedData.data.data.results;
+            this.loading = false;
           });
     },
   },
