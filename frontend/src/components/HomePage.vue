@@ -19,6 +19,13 @@
 
       <div id="sidebar" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
         <h3 class="text-center">All Collections Stats</h3>
+        <table class="table" >
+            <tr> {{ stats.collectionsCount }} count for all collections </tr>
+            <tr> {{ stats.comicsCount }} count for all comics </tr>
+            <tr> {{ stats.usersCount }} for all users </tr>
+            <tr> {{ stats.premiumUsersCount }} count for premium users </tr>
+            <tr> {{ stats.publicCollectionsCount }} count for all public collections </tr>
+        </table>
       </div>
     </div>
 
@@ -49,6 +56,7 @@ export default {
     return {
       newestReleases: [],
       loading: true,
+      stats: []
     }
   },
   methods: {
@@ -73,7 +81,18 @@ export default {
         this.newestReleases = JSON.parse(localStorage.getItem('newestReleases'));
         this.loading = false;
       }
+    },
+
+    getStats() {
+      apiCalls.get(`/stats`)
+      .then((response) => {
+            this.stats = response.data;
+            this.loading = false;
+          });
     }
+  },
+  created() {
+    this.getStats();
   },
   mounted() {
     this.getRecentComics();

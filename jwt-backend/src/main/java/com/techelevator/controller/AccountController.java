@@ -7,7 +7,9 @@ import com.techelevator.authentication.JwtTokenHandler;
 import com.techelevator.authentication.RegistrationResult;
 import com.techelevator.authentication.UnauthorizedException;
 import com.techelevator.authentication.UserCreationException;
+import com.techelevator.model.JdbcStatsDao;
 import com.techelevator.model.JdbcUserDao;
+import com.techelevator.model.Stats;
 import com.techelevator.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class AccountController {
     
     @Autowired
     private JdbcUserDao userDao;
+    
+    @Autowired
+    private JdbcStatsDao statsDao;
 
     @PostMapping("/login")
     public String login(@RequestBody User user) throws UnauthorizedException {
@@ -118,6 +123,16 @@ public class AccountController {
     	} else {
     		throw new UnauthorizedException();
     	}
+    }
+    
+    @GetMapping("/stats")
+    public Stats getAllStats() throws CollectionNotFoundException {
+		return statsDao.getAllStats();
+//    	if (stats != 0) {
+//    		return stats;
+//    	} else {
+//    		throw new CollectionNotFoundException(0L, "Collections not found!");
+//    	}
     }
 
 }
