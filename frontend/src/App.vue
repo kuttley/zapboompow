@@ -4,7 +4,7 @@
 
     <router-view :key="$route.fullPath" />
 
-    <p class="d-flex justify-content-end">Data provided by Marvel. © 2014 Marvel</p>
+    <a class="d-flex justify-content-end" style="color: #21272d" href="http://marvel.com">Data provided by Marvel. © 2019 Marvel</a>
   </v-app>
 </template>
 

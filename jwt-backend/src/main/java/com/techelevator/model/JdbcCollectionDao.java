@@ -99,12 +99,6 @@ public class JdbcCollectionDao implements CollectionDao {
 
 	@Override
 	public void addComicToCollection(long collection_id, long comic_id) {
-		String sqlComicExists = "SELECT comic_id FROM comic WHERE comic_id = ?";
-		if (jdbcTemplate.queryForRowSet(sqlComicExists, comic_id).next() != true) {
-			String sqlInsertComicId = "INSERT INTO comic(comic_id) VALUES (?)";
-			jdbcTemplate.update(sqlInsertComicId, comic_id);
-		}
-		
 		String sql = "INSERT INTO comic_collection(comic_id, collection_id) VALUES (?, ?)";
 		jdbcTemplate.update(sql, comic_id, collection_id);
 	}

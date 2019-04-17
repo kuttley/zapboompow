@@ -1,5 +1,6 @@
 <template>
     <div id="searchPage" class="container-fluid rounded py-2 shadow-sm">
+      <h2>Getting the top 20 results for {{this.searchComicName.length > 0 ? 'comic \'' + this.searchComicName + '\'' : ''}}{{this.searchComicName.length > 1 && this.searchIssueNumber.length > 1 ? ' and ' : ''}}{{this.searchIssueNumber.length > 0 ? 'issue number \'' + this.searchIssueNumber + '\'' : ''}}...</h2>
       <div v-if="loading">Loading...</div>
       <div v-else>
         <div v-if="comics.length > 0">

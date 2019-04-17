@@ -45,6 +45,8 @@ export default {
         },
         searchSubmit() { 
           this.$router.push({ name:'search', query: { 'title': this.searchComicName,  'issueNumber': this.searchIssueNumber} });
+          this.searchComicName = '';
+          this.searchIssueNumber = '';
         },
     }
 }
