@@ -55,6 +55,9 @@ export default {
 <style lang="scss" scoped>
 #app {
   background-color: #F9EBBC;
+  background-image: url('./assets/background.png');
+  background-position: center;
+  background-size: cover;
   font-family: 'YanoneKaffeesatz', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

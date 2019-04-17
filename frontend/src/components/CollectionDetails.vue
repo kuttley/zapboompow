@@ -7,7 +7,9 @@
                 <h2 class="text-center">You don't have access to this collection.</h2>
             </div>
             <div v-else>
-                <h2>{{this.collectionDetails.collection_name}} Collection</h2>
+                <v-layout row>
+                    <h2>{{this.collectionDetails.collection_name}} Collection</h2>
+                </v-layout>
                 <h3 v-if="this.collectionDetails.comic_ids_in_collection < 1">No comics in this collection.</h3>
                 <div v-else>
                     <v-container fluid grid-list-md>

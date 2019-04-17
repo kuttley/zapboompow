@@ -89,6 +89,7 @@ const router = new Router({
       component: PremiumUpgrade,
       beforeEnter(to, from, next) {
         if (auth.getUser() != null) {
+          console.log(auth.getUser());
           if (auth.getUser().rol == 'premium') {
             next('/');
           } else {
