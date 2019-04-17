@@ -4,17 +4,17 @@
         <div v-if="loading">Loading...</div>
         <div v-else class="row px-2">
             <div>
-                <v-img :src="comic.image" contain width="550px" height="845px"></v-img>
+                <v-img :src="comic.comic_image" contain width="550px" height="845px"></v-img>
             </div>
             <div class="mt-3 ml-auto mr-auto col-md-6">
-                <h1>{{this.comic.title}}</h1>
-                <h5>{{this.comic.description}}</h5>
+                <h1>{{this.comic.comic_title}}</h1>
+                <h5>{{this.comic.comic_description}}</h5>
                 <div class="mt-3 row wrap ml-0 text-center">
                     <div>
                         <h5 class="font-weight-bold">Published:</h5>
-                        <h5>{{this.comic.publishedDate.toLocaleString('en-us', { month: 'long', year: 'numeric', day: 'numeric'})}}</h5>
+                        <h5>{{this.comic.comic_release_date.toLocaleString('en-us', { month: 'long', year: 'numeric', day: 'numeric'})}}</h5>
                     </div>
-                    <div class="mr-auto ml-auto" v-for="(creator, i) in this.comic.creators" :key="i">
+                    <div class="mr-auto ml-auto" v-for="(creator, i) in this.comic.comic_creators" :key="i">
                         <h5 class="font-weight-bold">{{creator.role}}:</h5>
                         <h5>{{creator.name}}</h5>
                     </div>
@@ -49,11 +49,11 @@ export default {
             currUser: null,
             loading: true,
             comic: {
-                title: 'Title',
-                image: '',
-                description: 'Description',
-                publishedDate: '05/21/2019',
-                creators: [],
+                comic_title: 'Title',
+                comic_image: '',
+                comic_description: 'Description',
+                comic_release_date: '05/21/2019',
+                comic_creators: [],
             },
             userCollections: [],
             collectionToAddTo: ''
@@ -81,23 +81,44 @@ export default {
         if (this.currUser != null) {
             this.getUserCollections();
         }
-        apiCalls.marvelGet(`/comics/${this.$route.params.id}`)
+        apiCalls.get(`/comic/id/${this.$route.params.id}`)
             .then((response) => {
-                let comicData = response.data.data.results[0];
-                this.comic.title = comicData.title;
-                if (comicData.images.length < 1) {
-                    this.comic.image = comicData.thumbnail.path + "/detail." + comicData.thumbnail.extension;
-                } else {
-                    this.comic.image = comicData.images[0].path + "/detail." + comicData.images[0].extension;
-                }
-                this.comic.description = comicData.description;
-                this.comic.publishedDate = new Date(comicData.dates[0].date);
-                comicData.creators.items.forEach(element => {
-                    this.comic.creators.push({ name: element.name, role: element.role });
-                });
+                console.log(response);
+                let comicData = response.data;
+                this.comic.comic_title = comicData.comic_title;
+                this.comic.comic_image = comicData.comic_image;
+                this.comic.comic_description = comicData.comic_description;
+                this.comic.comic_release_date = new Date(comicData.comic_release_date);
+                this.comic.comic_creators = JSON.parse(comicData.comic_creators);
                 this.loading = false;
             })
-            .catch(() => this.$router.push('/404'));
+            .catch(() => {
+                apiCalls.marvelGet(`/comics/${this.$route.params.id}`)
+                    .then((response) => {
+                        let comicData = response.data.data.results[0];
+                        this.comic.comic_title = comicData.title;
+                        if (comicData.images.length < 1) {
+                            this.comic.comic_image = comicData.thumbnail.path + "/detail." + comicData.thumbnail.extension;
+                        } else {
+                            this.comic.comic_image = comicData.images[0].path + "/detail." + comicData.images[0].extension;
+                        }
+                        this.comic.comic_description = comicData.description;
+                        this.comic.comic_release_date = new Date(comicData.dates[0].date);
+                        comicData.creators.items.forEach(element => {
+                            this.comic.comic_creators.push({ name: element.name, role: element.role });
+                        });
+                        apiCalls.post(`/comic`, {
+                            "comic_id": this.$route.params.id,
+                            "comic_title": this.comic.comic_title,
+                            "comic_image": this.comic.comic_image,
+                            "comic_description": this.comic.comic_description,
+                            "comic_release_date": this.comic.comic_release_date,
+                            "comic_creators": JSON.stringify(this.comic.comic_creators)
+                        });
+                        this.loading = false;
+                    })
+                    .catch(() => this.$router.push('/404'));
+            });
     }
 }
 </script>

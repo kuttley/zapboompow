@@ -3,6 +3,8 @@
     <nav-bar :loggedIn="loggedIn" :username="username" :userID="userID" v-on:logout="userLogout" />
 
     <router-view :key="$route.fullPath" />
+
+    <p class="d-flex justify-content-end">Data provided by Marvel. © 2014 Marvel</p>
   </v-app>
 </template>
 

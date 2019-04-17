@@ -40,6 +40,10 @@
 						<value>/collection/all</value>
 						<value>/collection</value>
 						<value>/user</value>
+						<value>/comic/id</value>
+						<value>/comic/title</value>
+						<value>/comic/creator</value>
+						<value>/comic</value>
 						<value>/api/validate/email</value>
 						<value>/api/validate/username</value>
 					</list>

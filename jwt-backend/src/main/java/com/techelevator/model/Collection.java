@@ -9,6 +9,7 @@ public class Collection {
 	private String collection_name;
 	private boolean public_bool;
 	private long[] comic_ids_in_collection;
+	private boolean featured;
 	
 	public Collection() {
 		
@@ -49,6 +50,14 @@ public class Collection {
 
 	public void setComic_ids_in_collection(long[] comic_ids_in_collection) {
 		this.comic_ids_in_collection = comic_ids_in_collection;
+	}
+
+	public boolean isFeatured() {
+		return featured;
+	}
+
+	public void setFeatured(boolean featured) {
+		this.featured = featured;
 	}
 
 }

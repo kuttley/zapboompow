@@ -23,7 +23,8 @@ CREATE TABLE collections
     user_id integer,
     collection_id integer NOT NULL DEFAULT nextval('collection_id_seq'::regclass),
     collection_name varchar(255) NOT NULL,
-    public_bool varchar(5) DEFAULT 'true' NOT NULL, 
+    public_bool boolean DEFAULT true NOT NULL,
+    is_featured boolean DEFAULT false NOT NULL,
     CONSTRAINT pk_collections_collection_id PRIMARY KEY (collection_id)
 );
 
@@ -31,7 +32,13 @@ DROP TABLE IF EXISTS comic;
 
 CREATE TABLE comic
 (
-    comic_id integer NOT NULL, -- pulled from API 
+    comic_id integer NOT NULL, -- pulled from API
+    comic_image TEXT NOT NULL,
+    comic_title TEXT NOT NULL,
+    comic_description TEXT NOT NULL,
+    comic_release_date DATE NOT NULL,
+    comic_creators TEXT NOT NULL,
+    
     CONSTRAINT pk_comic_comic_id PRIMARY KEY (comic_id)
 );
 
