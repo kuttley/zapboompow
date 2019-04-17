@@ -95,14 +95,25 @@ export default {
         },
         getComicsForCollection() {
             for (let i = 0; i < this.collectionDetails.comic_ids_in_collection.length; i++) {
-                apiCalls.marvelGet(`/comics/${this.collectionDetails.comic_ids_in_collection[i]}`)
+                apiCalls.get(`/comic/id/${this.collectionDetails.comic_ids_in_collection[i]}`)
                     .then((response) => {
-                        let comicData = response.data.data.results[0];
+                        let comicData = response.data;
                         let comicInfo = {};
-                        comicInfo.id = comicData.id;
-                        comicInfo.title = comicData.title;
-                        comicInfo.thumbnail = `${(comicData.thumbnail.path.includes('image_not_available') && comicData.images.length > 0) ? comicData.images[0].path : comicData.thumbnail.path}/portrait_medium.${comicData.thumbnail.extension}`;
+                        comicInfo.id = comicData.comic_id;
+                        comicInfo.title = comicData.comic_title;
+                        comicInfo.thumbnail = comicData.comic_image;
                         this.collectionComics.push(comicInfo);
+                    })
+                    .catch(() => {
+                        apiCalls.marvelGet(`/comics/${this.collectionDetails.comic_ids_in_collection[i]}`)
+                            .then((response) => {
+                                let comicData = response.data.data.results[0];
+                                let comicInfo = {};
+                                comicInfo.id = comicData.id;
+                                comicInfo.title = comicData.title;
+                                comicInfo.thumbnail = `${(comicData.thumbnail.path.includes('image_not_available') && comicData.images.length > 0) ? comicData.images[0].path : comicData.thumbnail.path}/portrait_medium.${comicData.thumbnail.extension}`;
+                                this.collectionComics.push(comicInfo);
+                            });
                     });
             }
             this.loading = false;

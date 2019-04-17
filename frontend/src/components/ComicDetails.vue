@@ -83,7 +83,6 @@ export default {
         }
         apiCalls.get(`/comic/id/${this.$route.params.id}`)
             .then((response) => {
-                console.log(response);
                 let comicData = response.data;
                 this.comic.comic_title = comicData.comic_title;
                 this.comic.comic_image = comicData.comic_image;

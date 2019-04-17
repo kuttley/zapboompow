@@ -59,7 +59,6 @@ export default {
         register() {
             apiCalls.post('/register', this.user)
                 .then((response) => {
-                    console.log(response.data);
                     if (response.data.success) {
                         this.$router.push({ path: '/login', query: { registration: 'success' } });
                     } else {

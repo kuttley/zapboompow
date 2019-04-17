@@ -59,7 +59,7 @@ export default {
             if (firstComicIdInCollection != undefined) {
                 apiCalls.get(`/comic/id/${firstComicIdInCollection}`)
                     .then((response) => {
-                        collection.thumbnail = response.comic_image;
+                        collection.thumbnail = response.data.comic_image;
                         this.collections.push(collection);
                     })
                     .catch(() => {
