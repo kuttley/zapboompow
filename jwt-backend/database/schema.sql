@@ -33,11 +33,11 @@ DROP TABLE IF EXISTS comic;
 CREATE TABLE comic
 (
     comic_id integer NOT NULL, -- pulled from API
-    comic_image TEXT NOT NULL,
-    comic_title TEXT NOT NULL,
-    comic_description TEXT NOT NULL,
-    comic_release_date DATE NOT NULL,
-    comic_creators TEXT NOT NULL,
+    comic_image TEXT DEFAULT ''  NOT NULL,
+    comic_title TEXT DEFAULT ''  NOT NULL,
+    comic_description TEXT DEFAULT '' NOT NULL,
+    comic_release_date DATE DEFAULT CURRENT_DATE NOT NULL,
+    comic_creators TEXT DEFAULT '' NOT NULL,
     
     CONSTRAINT pk_comic_comic_id PRIMARY KEY (comic_id)
 );
