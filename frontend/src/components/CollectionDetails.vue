@@ -121,8 +121,7 @@ export default {
         },
         renameCollection() {
             this.collectionDetails.collection_name = this.collectionRename;
-            apiCalls.post('/collection/rename', this.collectionDetails)
-                .then(() => this.$router.go(0));
+            apiCalls.post('/collection/rename', this.collectionDetails);
         }
     },
     created() {
