@@ -28,8 +28,7 @@ export default {
 
     
     post(url, data) {
-        return this.data().backend.post(url, data)
-            .catch((err) => console.log(err));
+        return this.data().backend.post(url, data);
     },
     get(url) {
         return this.data().backend.get(url);

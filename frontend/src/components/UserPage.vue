@@ -44,7 +44,6 @@ export default {
         getProfileById() {
             apiCalls.get(`/user/${this.profileID}`)
                 .then((response) => {
-                    console.log(response);
                     this.profile.username = response.data.username;
                     this.title = "ZapBoomPow - " + this.profile.username;
                     this.loading = false;

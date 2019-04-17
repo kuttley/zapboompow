@@ -5,9 +5,9 @@
           <div class="col col-sm-auto align-self-center">
             <form method="GET" class="form-inline">
               <div class="row align-self-center">
-              <v-text-field label="Search For Comic By Name" solo-inverted v-model="searchComicName" v-on:keyup.enter="searchSubmit"></v-text-field>
-              <v-text-field label="Issue Number" append-icon="search" solo-inverted v-model="searchIssueNumber" v-on:keyup.enter="searchSubmit"></v-text-field>
-              <v-btn color="primary white--text" class="text-none" dark :to="{ name:'search', query: { 'title': searchComicName,  'issueNumber': searchIssueNumber} }" name='submit' type='search' value="Search">Submit</v-btn>
+                <v-text-field label="Search For Comic By Name" hide-details solo-inverted v-model="searchComicName" v-on:keyup.enter="searchSubmit"></v-text-field>
+                <v-text-field label="Issue Number" append-icon="search" hide-details solo-inverted v-model="searchIssueNumber" v-on:keyup.enter="searchSubmit"></v-text-field>
+                <v-btn color="primary white--text" class="text-none" dark :to="{ name:'search', query: { 'title': searchComicName,  'issueNumber': searchIssueNumber} }" name='submit' type='search' value="Search">Submit</v-btn>
               </div>
             </form>
           </div>

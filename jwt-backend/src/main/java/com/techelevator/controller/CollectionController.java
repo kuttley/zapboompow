@@ -11,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +53,33 @@ public class CollectionController {
 	    		
 	    	} else {
 	    		throw new CollectionNotFoundException(collection_id, "Collection not found!");
+	    	}
+	    }
+	    
+	    @PostMapping("/delete")
+	    public boolean deleteCollection(@RequestBody Long collection_id) throws CollectionNotFoundException {
+	    	Collection collectionToDelete = collectionDao.findById(collection_id);
+	    	if (authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == collectionToDelete.getUser_id()) {
+		    	if (!collectionDao.deleteCollection(collection_id)) {
+		    		throw new CollectionNotFoundException(collection_id, "Collection not found!");
+		    	}
+		    	
+		    	return true;
+	    	} else {
+	    		return false;
+	    	}
+	    }
+	    
+	    @PostMapping("/rename")
+	    public boolean renameCollection(@RequestBody Collection renamedCollection) throws CollectionNotFoundException {
+	    	if (authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == renamedCollection.getUser_id()) {
+	    		if (!collectionDao.changeCollectionName(renamedCollection.getCollection_id(), renamedCollection.getCollection_name())) {
+	    			throw new CollectionNotFoundException(renamedCollection.getCollection_id(), "Collection not found!");
+	    		}
+	    		
+	    		return true;
+	    	} else {
+	    		return false;
 	    	}
 	    }
 	    

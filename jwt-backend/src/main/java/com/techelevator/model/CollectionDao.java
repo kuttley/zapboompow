@@ -6,7 +6,7 @@ public interface CollectionDao {
 	
 	public Collection saveCollection(long user_id, String collection_name, Boolean public_bool);
 	
-    public void changeCollectionName(long collection_id, String newCollection_name);
+    public boolean changeCollectionName(long collection_id, String newCollection_name);
     
     public List<Collection> getCollectionsByUserId(long user_id);
 
@@ -19,5 +19,7 @@ public interface CollectionDao {
 	public List<Collection> getAllPublicCollections();
 
 	public List<Collection> getAllPublicCollectionsForUserId(long user_id);
+
+	public boolean deleteCollection(long collection_id);
 
 }

@@ -45,7 +45,6 @@ export default {
     getComics() {
         apiCalls.marvelGet(`/comics?${this.searchComicName.length > 0 ? 'title=' + this.searchComicName : '' }${this.searchIssueNumber.length > 0 ? '&issueNumber=' + this.searchIssueNumber : ''}`)
           .then((response) => {
-            console.log(response);
             this.comics = response.data.data.results;
             this.loading = false;
           });

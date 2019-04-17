@@ -47,8 +47,6 @@ export default {
     },
     methods: {
         createCollection() {
-            console.log(this.currUser);
-
             apiCalls.post('/collection/', this.newCollection)
                 .then(() => {
                     this.$router.push('/user/' + this.currUser.uid);

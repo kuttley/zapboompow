@@ -26,7 +26,26 @@
                         </v-layout>
                     </v-container>
                 </div>
-                <h2>{{this.collectionDetails}}</h2>
+                <!-- <h2>{{this.collectionDetails}}</h2> -->
+                <div v-if="this.currUser.uid == this.collectionDetails.user_id">
+                    <div v-if="deleted == null">
+                        <v-layout align-end column>
+                            <div class="row m-0">
+                                <v-text-field v-model="collectionRename" label="Rename Collection" hide-details></v-text-field>
+                                <v-btn @click.prevent="renameCollection" color="info" dark>Rename</v-btn>
+                            </div>
+                            <div>
+                                <v-btn @click.prevent="deleteCollection" :loading="deleted" :disabled="deleted" color="warning" dark>Delete Collection</v-btn>
+                            </div>
+                        </v-layout>
+                    </div>
+                    <div v-else-if="deleted == true">
+                        <v-alert :value="true" type="success">Collection deleted...</v-alert>
+                    </div>
+                    <div v-else>
+                        <v-alert :value="true" type="error">Could not delete collection.</v-alert>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +62,9 @@ export default {
             loading: true,
             collectionDetails: null,
             collectionComics: [],
+            deleted: null,
+            currUser: auth.getUser(),
+            collectionRename: ''
         }
     },
     methods: {
@@ -54,8 +76,8 @@ export default {
                         this.title = this.collectionDetails.collection_name;
                         this.getComicsForCollection();
                     } else {
-                        if (auth.getUser() != null) {
-                            if (auth.getUser().uid == response.data.user_id) {
+                        if (this.currUser != null) {
+                            if (this.currUser.uid == response.data.user_id) {
                                 this.collectionDetails = response.data;
                                 this.title = this.collectionDetails.collection_name;
                                 this.getComicsForCollection();
@@ -85,6 +107,23 @@ export default {
             }
             this.loading = false;
         },
+        deleteCollection() {
+            apiCalls.post('/collection/delete', this.$route.params.id)
+                .then((response) => {
+                    if (response.data == true) {
+                        this.deleted = true;
+                        setTimeout(() => this.$router.push(`/user/${this.currUser.uid}`), 2000);
+                    } else {
+                        this.deleted = false;
+                    }
+                })
+                .catch(() => this.deleted = false);
+        },
+        renameCollection() {
+            this.collectionDetails.collection_name = this.collectionRename;
+            apiCalls.post('/collection/rename', this.collectionDetails)
+                .then(() => this.$router.go(0));
+        }
     },
     created() {
         this.getCollectionDetails();

@@ -45,11 +45,28 @@ public class JdbcCollectionDao implements CollectionDao {
 	}
 
 	@Override
-	public void changeCollectionName(long collection_id, String newCollection_name) {
-
-		jdbcTemplate.update("UPDATE collections SET collection_name=? WHERE collection_id=?",
-                newCollection_name, collection_id);
+	public boolean deleteCollection(long collection_id) {
+		int result = jdbcTemplate.update("DELETE FROM comic_collection WHERE collection_id = ?", collection_id);
+		result += jdbcTemplate.update("DELETE FROM collections WHERE collection_id = ?", collection_id);
+		if (result > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
+	
+	@Override
+	public boolean changeCollectionName(long collection_id, String new_collection_name) {
+
+		int result = jdbcTemplate.update("UPDATE collections SET collection_name=? WHERE collection_id=?",
+                new_collection_name, collection_id);
+		
+		if (result > 0) {
+			return true;
+		} else {
+			return false;
+		}
+ 	}
 
 	@Override
 	public List<Collection> getCollectionsByUserId(long user_id) {
