@@ -26,6 +26,7 @@ import apiCalls from '@/apiCalls';
 export default {
     props: {
         profileID: String,
+        featuredCollections: Boolean,
     },
     data() {
         return {
@@ -38,18 +39,33 @@ export default {
                 apiCalls.get(`/collection/all/${this.profileID}`)
                     .then((response) => {
                         response.data.forEach((collection) => {
-                            this.getThumbnailForCollection(collection);
+                            if (this.featuredCollections == true) {
+                                if (collection.featured == true)
+                                    this.getThumbnailForCollection(collection);
+                            } else {
+                                this.getThumbnailForCollection(collection);
+                            }
                         })
                     });
             } else {
                 apiCalls.get(`/collection/all`)
                     .then((response) => {
                         response.data.forEach((collection) => {
-                            apiCalls.get(`/user/${collection.user_id}`)
-                                .then((response) => {
-                                    collection.username = response.data.username;
-                                    this.getThumbnailForCollection(collection);
-                                });
+                            if (this.featuredCollections == true) {
+                                if (collection.featured == true) {
+                                    apiCalls.get(`/user/${collection.user_id}`)
+                                        .then((response) => {
+                                            collection.username = response.data.username;
+                                            this.getThumbnailForCollection(collection);
+                                        });
+                                }
+                            } else {
+                                apiCalls.get(`/user/${collection.user_id}`)
+                                    .then((response) => {
+                                        collection.username = response.data.username;
+                                        this.getThumbnailForCollection(collection);
+                                    });
+                            }
                         });
                     });
             }

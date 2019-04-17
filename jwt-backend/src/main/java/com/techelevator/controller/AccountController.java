@@ -128,11 +128,6 @@ public class AccountController {
     @GetMapping("/stats")
     public Stats getAllStats() throws CollectionNotFoundException {
 		return statsDao.getAllStats();
-//    	if (stats != 0) {
-//    		return stats;
-//    	} else {
-//    		throw new CollectionNotFoundException(0L, "Collections not found!");
-//    	}
     }
 
 }

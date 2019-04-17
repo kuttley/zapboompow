@@ -32,7 +32,7 @@
     <div class="row">    
       <div id="featured" class="col col-sm-auto rounded pt-2 shadow-sm">
         <h2>Featured Collections</h2>
-        <collection-list />
+        <collection-list :featuredCollections="true" />
 
         <div class="d-flex flex-column justify-content-sm-center align-items-md-end mb-3">
           <router-link to="/collections" tag="button" class="btn btn-lg btn-success">View All</router-link>
