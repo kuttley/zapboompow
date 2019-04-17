@@ -31,8 +31,8 @@
                     <div v-if="deleted == null">
                         <v-layout align-end column>
                             <div class="row m-0">
-                                <v-text-field v-model="collectionRename" label="Rename Collection" hide-details></v-text-field>
-                                <v-btn @click.prevent="renameCollection" color="info" dark>Rename</v-btn>
+                                <v-text-field v-model="collectionRename" label="Rename Collection" v-on:keyup.enter="renameCollection(); collectionRename = '';" hide-details></v-text-field>
+                                <v-btn @click.prevent="renameCollection(); collectionRename = '';" color="info" dark>Rename</v-btn>
                             </div>
                             <div>
                                 <v-btn @click.prevent="deleteCollection" :loading="deleted" :disabled="deleted" color="warning" dark>Delete Collection</v-btn>

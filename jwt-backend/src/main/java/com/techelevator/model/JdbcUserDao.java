@@ -152,16 +152,21 @@ public class JdbcUserDao implements UserDao {
 	@Override
 	public User getOtherUserById(Long id) {
 		String sql = "SELECT username FROM users WHERE user_id = ?";
-		 SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
-		 if(results.next()) {
-			 User otherUser = new User();
-			 
-			 otherUser.setUsername(results.getString("username"));
-			 otherUser.setId(id);
-	            return otherUser;
-	        } else {
-	            return null;
-	        }
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+		if(results.next()) {
+			User otherUser = new User();
+
+			otherUser.setUsername(results.getString("username"));
+			otherUser.setId(id);
+			return otherUser;
+		} else {
+			return null;
+			}
 	    }
 
+	@Override
+	public void upgradeUserToPremium(Long id) {
+		String sql = "UPDATE users SET role = 'premium' WHERE user_id = ?";
+		jdbcTemplate.update(sql, id);
+	}
 }

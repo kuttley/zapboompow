@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import apiCalls from '@/apiCalls';
+
 export default {
     props: {
         loggedIn: Boolean,
@@ -41,7 +43,8 @@ export default {
     },
     methods: {
         logout() {
-            this.$emit('logout');
+          apiCalls.post('/logout');
+          this.$emit('logout');
         },
         searchSubmit() { 
           this.$router.push({ name:'search', query: { 'title': this.searchComicName,  'issueNumber': this.searchIssueNumber} });

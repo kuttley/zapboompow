@@ -40,5 +40,7 @@ public interface UserDao {
     public User getOtherUserById(Long id);
 
 	public User getUserByEmail(String email);
+	
+	public void upgradeUserToPremium(Long id);
 
 }

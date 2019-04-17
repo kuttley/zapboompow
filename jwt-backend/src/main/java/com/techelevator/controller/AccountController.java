@@ -47,7 +47,6 @@ public class AccountController {
     	auth.logOff();
     }
 
-
     @PostMapping("/register")
     public RegistrationResult register(@Valid @RequestBody User user, BindingResult result) {
     	RegistrationResult registrationResult = new RegistrationResult();
@@ -65,7 +64,6 @@ public class AccountController {
         }
     	else {
     		auth.register(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail());
-    		System.out.println(user.getUsername());
     		registrationResult.setSuccess(true);
     	}
     	return registrationResult;
@@ -108,6 +106,17 @@ public class AccountController {
     		return true;
     	} else {
     		return false;
+    	}
+    }
+
+    @PostMapping("/upgrade")
+    public String upgradeAccount(@RequestBody Long user_id) throws UnauthorizedException {
+    	if (auth.getCurrentUser() != null && auth.getCurrentUser().getRole() != "premium" && auth.getCurrentUser().getId() == user_id) {
+    		userDao.upgradeUserToPremium(user_id);
+    		User upgradedUser = userDao.getOtherUserById(user_id);
+            return tokenHandler.createToken(upgradedUser.getUsername(), upgradedUser.getRole(), upgradedUser.getId());
+    	} else {
+    		throw new UnauthorizedException();
     	}
     }
 

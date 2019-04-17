@@ -17,7 +17,7 @@
                     <div v-else>
                         <h4 class="font-weight-light">You've reached the maximum amount of collections for your account.</h4>
                         <h5 class="font-weight-light">Upgrade to Premium for unlimited collections and more!</h5>
-                        <v-btn color="warning">Learn more about Premium!</v-btn>
+                        <v-btn color="warning" :to="'/upgrade'">Learn more about Premium!</v-btn>
                     </div>
                 </div>
             </div>
@@ -72,8 +72,7 @@ export default {
     },
     created() {
         this.canCreateCollection();
-        console.log(this.collectionCreatable);
-    }
+    },
 }
 </script>
 

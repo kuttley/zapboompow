@@ -11,6 +11,7 @@ import Collection from '@/views/Collection.vue';
 import Comic from '@/views/Comic.vue';
 import Search from '@/views/Search.vue';
 import PageNotFound from '@/views/PageNotFound.vue';
+import PremiumUpgrade from '@/views/PremiumUpgrade.vue';
 
 
 Vue.use(Router)
@@ -82,6 +83,21 @@ const router = new Router({
       component: Search,
       name: 'search',
       props: true
+    },
+    {
+      path: '/upgrade',
+      component: PremiumUpgrade,
+      beforeEnter(to, from, next) {
+        if (auth.getUser() != null) {
+          if (auth.getUser().rol == 'premium') {
+            next('/');
+          } else {
+            next();
+          }
+        } else {
+          next('/login');
+        }
+      }
     },
     {
       path: '*',
