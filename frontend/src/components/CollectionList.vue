@@ -1,16 +1,16 @@
 <template>
     <v-container fluid grid-list-md>
         <v-layout row wrap>
-            <v-flex v-for="collection in collections" :key="collection.collection_id" xl2 md3 sm5 xs12 v-bind="{[`order-${collection.collection_id}`] : true}">
-                <v-card tile height="260" width="170" color="rgba(255,255,255,0.4)">
+            <v-flex v-for="collection in collections" :key="collection.collection_id" offset-xs2 offset-xl1 offset-md1 offset-sm1 offset-lg1 xl2 md3 sm5 xs12 v-bind="{[`order-${collection.collection_id}`] : true}">
+                <v-card tile min-height="265" max-width="170" color="rgba(255,255,255,0.4)">
                     <router-link :to="`/collections/${collection.collection_id}`">
                         <v-img :src="collection.thumbnail" height="150" contain></v-img>
                         <v-card-title primary-title class="text-center justify-content-center grey--text text--darken-4">
                             <div>
                                 <h4 class="mb-0">{{collection.collection_name}}</h4>
-                                <p v-if="profileID == null" class="mb-1">{{collection.username}}</p>
-                                <p v-if="collection.public_bool == false" class="mb-1">Private</p>
-                                <div>{{collection.comic_ids_in_collection.length}} comic{{(collection.comic_ids_in_collection.length > 1 || collection.comic_ids_in_collection.length == 0) ? 's' : ''}} in collection</div>
+                                <p v-if="profileID == null" class="mb-0">{{collection.username}}</p>
+                                <p v-if="collection.public_bool == false" class="mb-0">Private</p>
+                                <div class="mb-0">{{collection.comic_ids_in_collection.length}} comic{{(collection.comic_ids_in_collection.length > 1 || collection.comic_ids_in_collection.length == 0) ? 's' : ''}} in collection</div>
                             </div>
                         </v-card-title>
                     </router-link>
