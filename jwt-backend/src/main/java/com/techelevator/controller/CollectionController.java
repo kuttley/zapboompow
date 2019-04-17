@@ -44,10 +44,10 @@ public class CollectionController {
 	    	
 	    		if(collection.isPublic_bool() == true) {
 	    			return collection;
-	    		} else if(collection.getUser_id() == authProvider.getCurrentUser().getId()) {
+	    		} else if(authProvider.getCurrentUser() != null && collection.getUser_id() == authProvider.getCurrentUser().getId()) {
 	    			return collection;
 	    		} else {
-		    		throw new CollectionNotFoundException(collection_id, "Can not view collection!");
+		    		return null;
 	    		}
 	    		
 	    	} else {
@@ -92,30 +92,32 @@ public class CollectionController {
 	            }
 	            throw new CollectionCreationException(errorMessages);
 	    	}
-	    	
-	    	if(authProvider.getCurrentUser().getRole().equals("standard") && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
-	    		throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
-
+	    	if (authProvider.getCurrentUser() != null) {
+		    	if(authProvider.getCurrentUser().getRole().equals("standard") && collectionDao.getCollectionsByUserId(authProvider.getCurrentUser().getId()).size() >= 1) {
+		    		throw new CollectionCreationException("Your Account Has Reached It's Collection Limit!");
+	
+		    	}
+		    	collection.setUser_id(authProvider.getCurrentUser().getId());
+		    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
+	    	} else {
+	    		throw new CollectionCreationException("You don't have access.");
 	    	}
-	    	collection.setUser_id(authProvider.getCurrentUser().getId());
-	    	return collectionDao.saveCollection(collection.getUser_id(), collection.getCollection_name(), collection.isPublic_bool());
-	    
 	    }
 	    
 	    
 	    @RequestMapping(path="/add", method=RequestMethod.POST)
 	    public void addComic(@Valid @RequestBody ComicCollection comicCollection, BindingResult result) throws CollectionNotFoundException {
-	    	if(authProvider.getCurrentUser().getId() == collectionDao.findById(comicCollection.getCollection_id()).getUser_id()) {
-	    	if(result.hasErrors()) {
-	            String errorMessages = "";
-	            for(ObjectError error : result.getAllErrors()) {
-	                errorMessages += error.getDefaultMessage() + "\n";
-	            }
-	            throw new CollectionNotFoundException(comicCollection.getCollection_id(), errorMessages);
+	    	if(authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == collectionDao.findById(comicCollection.getCollection_id()).getUser_id()) {
+		    	if(result.hasErrors()) {
+		            String errorMessages = "";
+		            for(ObjectError error : result.getAllErrors()) {
+		                errorMessages += error.getDefaultMessage() + "\n";
+		            }
+		            throw new CollectionNotFoundException(comicCollection.getCollection_id(), errorMessages);
+		    	}
+		    	collectionDao.addComicToCollection(comicCollection.getCollection_id(), comicCollection.getComic_id());
+	    	} else {
+	    		throw new CollectionNotFoundException(0L, "You don't have access.");
 	    	}
-	    	
-	    	collectionDao.addComicToCollection(comicCollection.getCollection_id(), comicCollection.getComic_id());
-	    
-	    }
 	    }
 }

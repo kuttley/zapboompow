@@ -2,22 +2,28 @@
     <div id="searchPage" class="container-fluid rounded py-2 shadow-sm">
       <div v-if="loading">Loading...</div>
       <div v-else>
-        <v-card>
+        <div v-if="comics.length > 0">
           <v-container fluid grid-list-md>
             <v-layout row wrap>
-              <v-flex v-for="comic in comics" :key="comic.id">
-                <v-card>
+              <v-flex v-for="comic in comics" :key="comic.id" md2 sm5 xs12>
+                <v-card color="rgba(255,255,255,0.4)">
                   <router-link :to="`/comic/${comic.id}`">
-                    <v-img :src="comic.thumbnail.path + '/portrait_medium.' + comic.thumbnail.extension" height="200px" contain></v-img>
+                    <v-img :src="
+                      `${(comic.thumbnail.path.includes('image_not_available') && comic.images.length > 0) ? comic.images[0].path : comic.thumbnail.path}/portrait_medium.${comic.thumbnail.extension}`" 
+                      height="200px" contain>
+                    </v-img>
                     <v-card-title primary-title class="text-center justify-content-center">
-                      <h4>{{ comic.title }}</h4>
+                      <h4 class="grey--text text--darken-4">{{ comic.title }}</h4>
                     </v-card-title>
                   </router-link>
                 </v-card>
               </v-flex>
             </v-layout>
           </v-container>
-        </v-card>
+        </div>
+        <div v-else>
+          <h2 class="text-center">No results found.</h2>
+        </div>
       </div>
     </div>
 </template>
@@ -38,8 +44,9 @@ export default {
   methods: {
     getComics() {
         apiCalls.marvelGet(`/comics?${this.searchComicName.length > 0 ? 'title=' + this.searchComicName : '' }${this.searchIssueNumber.length > 0 ? '&issueNumber=' + this.searchIssueNumber : ''}`)
-          .then((parsedData) => {
-            this.comics = parsedData.data.data.results;
+          .then((response) => {
+            console.log(response);
+            this.comics = response.data.data.results;
             this.loading = false;
           });
     },

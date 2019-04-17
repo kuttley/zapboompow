@@ -38,6 +38,7 @@
 						<value>/login</value>
 						<value>/register</value>
 						<value>/collection/all</value>
+						<value>/collection</value>
 						<value>/user</value>
 						<value>/api/validate/email</value>
 						<value>/api/validate/username</value>
