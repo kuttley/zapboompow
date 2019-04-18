@@ -1,7 +1,7 @@
 <template>
     <div id="searchPage" class="container-fluid rounded py-2 shadow-sm">
       <vue-headful title="ZapBoomPow - Searching..." />
-      <h2>Getting the top 20 results for {{this.searchComicName.length > 0 ? 'comic \'' + this.searchComicName + '\'' : ''}}{{this.searchComicName.length > 0 && this.searchIssueNumber.length > 0 ? ' and ' : ''}}{{this.searchIssueNumber.length > 0 ? 'issue number \'' + this.searchIssueNumber + '\'' : ''}}...</h2>
+      <h2>Getting the first 20 results for {{this.searchComicName.length > 0 ? 'comic \'' + this.searchComicName + '\'' : 'all comics'}} and {{this.searchIssueNumber.length > 0 ? 'issue number \'' + this.searchIssueNumber + '\'' : 'all issues'}}...</h2>
       <div v-if="loading">Loading...</div>
       <div v-else>
         <div v-if="comics.length > 0">
