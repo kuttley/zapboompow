@@ -114,7 +114,5 @@ public class User {
 	public void setFavoriteCollections(String[] favoriteCollections) {
 		this.favoriteCollections = favoriteCollections;
 	}
-
-	
 	
 }
