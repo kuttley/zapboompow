@@ -20,11 +20,11 @@
       <div id="sidebar" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
         <h3 class="text-center">All Collections Stats</h3>
         <table class="table" >
-            <tr> {{ stats.collectionsCount }} count for all collections </tr>
-            <tr> {{ stats.comicsCount }} count for all comics </tr>
-            <tr> {{ stats.usersCount }} for all users </tr>
-            <tr> {{ stats.premiumUsersCount }} count for premium users </tr>
-            <tr> {{ stats.publicCollectionsCount }} count for all public collections </tr>
+            <tr> {{ stats.collectionsCount }} number of collections </tr>
+            <tr> {{ stats.comicsCount }} total comics searched </tr>
+            <tr> {{ stats.usersCount }} number of users </tr>
+            <tr> {{ stats.premiumUsersCount }} number of premium users </tr>
+            <tr> {{ stats.publicCollectionsCount }} public collections created </tr>
         </table>
       </div>
     </div>
