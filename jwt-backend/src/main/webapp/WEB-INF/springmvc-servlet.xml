@@ -40,6 +40,8 @@
 						<value>/collection/all</value>
 						<value>/collection</value>
 						<value>/user</value>
+						<value>/user/favorites</value>
+						<value>/stats</value>
 						<value>/comic/id</value>
 						<value>/comic/title</value>
 						<value>/comic/creator</value>

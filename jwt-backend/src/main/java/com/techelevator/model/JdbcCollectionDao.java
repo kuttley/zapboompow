@@ -39,6 +39,7 @@ public class JdbcCollectionDao implements CollectionDao {
         newCollection.setCollection_name(collection_name);
         newCollection.setPublic_bool(public_bool);
         newCollection.setUser_id(user_id);
+        newCollection.setNum_favorites(0L);
        
 
         return newCollection;
@@ -125,6 +126,7 @@ public class JdbcCollectionDao implements CollectionDao {
 			
 			long[] comicsInCollection = getComicsInCollectionByCollectionId(collection.getCollection_id());
 			collection.setComic_ids_in_collection(comicsInCollection);
+			collection.setNum_favorites(rs.getLong("num_favorites"));
 			
 			return collection;
 		}

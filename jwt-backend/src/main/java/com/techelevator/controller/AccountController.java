@@ -1,5 +1,7 @@
 package com.techelevator.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.techelevator.authentication.AuthProvider;
@@ -7,6 +9,7 @@ import com.techelevator.authentication.JwtTokenHandler;
 import com.techelevator.authentication.RegistrationResult;
 import com.techelevator.authentication.UnauthorizedException;
 import com.techelevator.authentication.UserCreationException;
+import com.techelevator.model.CollectionFavorite;
 import com.techelevator.model.JdbcStatsDao;
 import com.techelevator.model.JdbcUserDao;
 import com.techelevator.model.Stats;
@@ -128,6 +131,25 @@ public class AccountController {
     @GetMapping("/stats")
     public Stats getAllStats() throws CollectionNotFoundException {
 		return statsDao.getAllStats();
+    }
+    
+    @PostMapping("/addToFavorites")
+    public void addToFavorites(@RequestBody CollectionFavorite newFav) {
+    	if (auth.getCurrentUser() != null && auth.getCurrentUser().getId() == newFav.getUser_id()) {
+    		userDao.addToFavoriteCollections(newFav.getUser_id(), newFav.getCollection_id());
+    	}
+    }
+    
+    @GetMapping("/user/favorites/{id}")
+    public List<String> getUserFavorites(@PathVariable Long id) {
+    	return userDao.getUserFavorites(id);
+    }
+    
+    @PostMapping("/removeFromFavorites")
+    public void removeFromFavorites(@RequestBody CollectionFavorite fav) {
+    	if (auth.getCurrentUser() != null && auth.getCurrentUser().getId() == fav.getUser_id()) {
+    		userDao.removeFromUserFavorites(fav.getUser_id(), fav.getCollection_id());
+    	}
     }
 
 }

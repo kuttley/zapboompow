@@ -43,4 +43,10 @@ public interface UserDao {
 	
 	public void upgradeUserToPremium(Long id);
 
+	public void addToFavoriteCollections(Long user_id, Long collection_id);
+
+	public List<String> getUserFavorites(Long user_id);
+
+	public void removeFromUserFavorites(Long user_id, Long collection_id);
+
 }

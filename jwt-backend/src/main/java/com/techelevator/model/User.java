@@ -1,5 +1,7 @@
 package com.techelevator.model;
 
+import java.util.List;
+
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -24,6 +26,8 @@ public class User {
     @NotBlank(message="Role is required")
     private String role;
     private long id;
+    
+    private String[] favoriteCollections;
 
     @Size(min=4, max=32, message="Password must be between 4 and 32 characters.")
 	@NotBlank(message="Password is required")
@@ -101,6 +105,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String[] getFavoriteCollections() {
+		return favoriteCollections;
+	}
+
+	public void setFavoriteCollections(String[] favoriteCollections) {
+		this.favoriteCollections = favoriteCollections;
 	}
 
 	

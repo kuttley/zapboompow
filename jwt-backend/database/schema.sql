@@ -9,6 +9,7 @@ CREATE TABLE users (
   password varchar(32) NOT NULL,      -- Password
   salt varchar(256) NOT NULL,          -- Password Salt
   role varchar(255) NOT NULL default('standard'), 
+  favorite_collections TEXT,
   CONSTRAINT pk_users_user_id PRIMARY KEY (user_id)
 
 );
@@ -25,6 +26,7 @@ CREATE TABLE collections
     collection_name varchar(255) NOT NULL,
     public_bool boolean DEFAULT true NOT NULL,
     is_featured boolean DEFAULT false NOT NULL,
+    num_favorites integer NOT NULL DEFAULT 0,
     CONSTRAINT pk_collections_collection_id PRIMARY KEY (collection_id)
 );
 
@@ -42,8 +44,6 @@ CREATE TABLE comic
     CONSTRAINT pk_comic_comic_id PRIMARY KEY (comic_id)
 );
 
-DROP TABLE IF EXISTS user_collection;
-
 DROP TABLE IF EXISTS comic_collection;
 
 CREATE TABLE comic_collection (
@@ -52,6 +52,21 @@ CREATE TABLE comic_collection (
   CONSTRAINT pk_comic_collection_comic_id_collection_id PRIMARY KEY (comic_id, collection_id)
 );
 
+DROP TABLE IF EXISTS user_favorites_collections;
+
+CREATE TABLE user_favorites_collections (
+	user_id integer NOT NULL,
+	collection_id integer NOT NULL,
+	CONSTRAINT pk_user_favorites_collections_user_id_collection_id PRIMARY KEY (user_id, collection_id)
+);
+
+ALTER TABLE user_favorites_collections
+ADD FOREIGN KEY(user_id)
+REFERENCES users(user_id);
+
+ALTER TABLE user_favorites_collections
+ADD FOREIGN KEY(collection_id)
+REFERENCES collections(collection_id);
 
 ALTER TABLE comic_collection 
 ADD FOREIGN KEY(comic_id)

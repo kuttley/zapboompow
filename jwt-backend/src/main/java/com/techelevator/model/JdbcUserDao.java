@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.techelevator.authentication.PasswordHasher;
-
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techelevator.authentication.PasswordHasher;
 
 @Component
 public class JdbcUserDao implements UserDao {
@@ -105,7 +106,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<User>();
-        String sqlSelectAllUsers = "SELECT user_id, username, role FROM users";
+        String sqlSelectAllUsers = "SELECT user_id, username, role, favorite_collections FROM users";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectAllUsers);
 
         while(results.next()) {
@@ -122,12 +123,21 @@ public class JdbcUserDao implements UserDao {
         user.setUsername(results.getString("username"));
         user.setRole(results.getString("role"));
         user.setEmail(results.getString("email"));
+        
+        String userFavorites = "SELECT collection_id FROM user_favorites_collections WHERE user_id = ?";
+        SqlRowSet favoritesResults = jdbcTemplate.queryForRowSet(userFavorites, user.getId());
+        List<String> favs = new ArrayList<>();
+        while (favoritesResults.next()) {
+        	favs.add(favoritesResults.getString("collection_id"));
+        }
+        
+        user.setFavoriteCollections(favs.toArray(new String[favs.size()]));
         return user;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        String sqlSelectUserByUsername = "SELECT user_id, username, role, email FROM users WHERE username = ?";
+        String sqlSelectUserByUsername = "SELECT user_id, username, role, email, favorite_collections FROM users WHERE username = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserByUsername, username);
 
         if(results.next()) {
@@ -139,7 +149,7 @@ public class JdbcUserDao implements UserDao {
     
     @Override
     public User getUserByEmail(String email) {
-    	String sqlSelectUserByEmail = "SELECT user_id, username, role, email FROM users WHERE email = ?";
+    	String sqlSelectUserByEmail = "SELECT user_id, username, role, email, favorite_collections FROM users WHERE email = ?";
     	SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectUserByEmail, email);
     	
     	if (results.next()) {
@@ -151,12 +161,22 @@ public class JdbcUserDao implements UserDao {
 
 	@Override
 	public User getOtherUserById(Long id) {
-		String sql = "SELECT username FROM users WHERE user_id = ?";
+		String sql = "SELECT username, favorite_collections FROM users WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 		if(results.next()) {
 			User otherUser = new User();
 
 			otherUser.setUsername(results.getString("username"));
+	        
+	        String userFavorites = "SELECT collection_id FROM user_favorites_collections WHERE user_id = ?";
+	        SqlRowSet favoritesResults = jdbcTemplate.queryForRowSet(userFavorites, id);
+	        List<String> favs = new ArrayList<>();
+	        while (favoritesResults.next()) {
+	        	favs.add(favoritesResults.getString("collection_id"));
+	        }
+	        
+	        otherUser.setFavoriteCollections(favs.toArray(new String[favs.size()]));
+			
 			otherUser.setId(id);
 			return otherUser;
 		} else {
@@ -168,5 +188,32 @@ public class JdbcUserDao implements UserDao {
 	public void upgradeUserToPremium(Long id) {
 		String sql = "UPDATE users SET role = 'premium' WHERE user_id = ?";
 		jdbcTemplate.update(sql, id);
+	}
+	
+	@Override
+	public void addToFavoriteCollections(Long user_id, Long collection_id) {
+		String sql = "INSERT INTO user_favorites_collections(user_id, collection_id) VALUES (?, ?)";
+		String updateCollectionSql = "UPDATE collections SET num_favorites = num_favorites+1 WHERE collection_id = ?";
+		jdbcTemplate.update(updateCollectionSql, collection_id);
+		jdbcTemplate.update(sql, user_id, collection_id);
+	}
+	
+	@Override
+	public List<String> getUserFavorites(Long user_id) {
+		String sql = "SELECT collection_id FROM user_favorites_collections WHERE user_id = ?";
+		SqlRowSet favs = jdbcTemplate.queryForRowSet(sql, user_id);
+		List<String> results = new ArrayList<>();
+		while (favs.next()) {
+			results.add(favs.getString("collection_id"));
+		}
+		return results;
+	}
+	
+	@Override
+	public void removeFromUserFavorites(Long user_id, Long collection_id) {
+		String sql = "DELETE FROM user_favorites_collections WHERE user_id = ? AND collection_id = ?";
+		String updateCollectionSql = "UPDATE collections SET num_favorites = num_favorites-1 WHERE collection_id = ?";
+		jdbcTemplate.update(updateCollectionSql, collection_id);
+		jdbcTemplate.update(sql, user_id, collection_id);
 	}
 }

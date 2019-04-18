@@ -10,6 +10,7 @@ public class Collection {
 	private boolean public_bool;
 	private long[] comic_ids_in_collection;
 	private boolean featured;
+	private long num_favorites;
 	
 	public Collection() {
 		
@@ -58,6 +59,14 @@ public class Collection {
 
 	public void setFeatured(boolean featured) {
 		this.featured = featured;
+	}
+	
+	public long getNum_favorites() {
+		return this.num_favorites;
+	}
+
+	public void setNum_favorites(long num_favorites) {
+		this.num_favorites = num_favorites;
 	}
 
 }

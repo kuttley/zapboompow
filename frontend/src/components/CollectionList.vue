@@ -39,9 +39,12 @@ export default {
                 apiCalls.get(`/collection/all/${this.profileID}`)
                     .then((response) => {
                         response.data.forEach((collection) => {
+                            console.log(this.featuredCollections);
                             if (this.featuredCollections == true) {
-                                if (collection.featured == true)
+                                console.log(collection);
+                                if (collection.featured == true || collection.num_favorites >= 5) {
                                     this.getThumbnailForCollection(collection);
+                                }
                             } else {
                                 this.getThumbnailForCollection(collection);
                             }
@@ -52,7 +55,7 @@ export default {
                     .then((response) => {
                         response.data.forEach((collection) => {
                             if (this.featuredCollections == true) {
-                                if (collection.featured == true) {
+                                if (collection.featured == true || collection.num_favorites >= 5) {
                                     apiCalls.get(`/user/${collection.user_id}`)
                                         .then((response) => {
                                             collection.username = response.data.username;
