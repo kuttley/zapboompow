@@ -6,7 +6,7 @@
       <div id="main" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
         <h2>Recent Comic Releases</h2>
 
-        <v-carousel hide-delimiters height="290" dark class="my-3">
+        <v-carousel hide-delimiters height="290" dark class="my-3 pt-3">
           <v-carousel-item v-if="loading"><h4 class="text-center">Loading...</h4></v-carousel-item>
           <v-carousel-item v-else v-for="comic in newestReleases" v-bind:key="comic.id">
             <router-link :to="`/comic/${comic.id}`">
