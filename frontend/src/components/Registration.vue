@@ -1,7 +1,7 @@
 <template>
     <div id="registration" class="text-center">
         <vue-headful title="ZapBoomPow - Registration" />
-        <h2>Create Account</h2>
+        <h2 class="mt-2">Create Account</h2>
         <form @submit.prevent="register" class="pt-3 pb-3 rounded">
             <div class="alert alert-danger" role="alert" v-if="registrationErrors.length > 0">
                 There were problems with registering your account.
@@ -18,16 +18,16 @@
             <label for="email" class="sr-only">Email Address</label>
             <input v-validate="'required|email|uniqueEmail'" type="email" name="email" id="email" class="form-control" placeholder="Email Address" v-model="user.email" required />
             <span v-show="errors.has('email')">{{errors.first('email')}}</span>
-            <div>
+            <v-layout column align-start fill-height ml-4>
                 <div>
                     <input name="rolecheck" id="rolecheck" class="form-check-input" v-model="isPremiumChecked" type="checkbox" />
-                    <label class="form-check-label" for="rolecheck">Would you like to upgrade to premium?</label>
+                    <label class="form-check-label" for="rolecheck">Upgrade to premium account!</label>
                 </div>
                 <div>
                     <input v-validate="'required:true'" name="agecheck" id="agecheck" class="form-check-input" v-model="user.over18" type="checkbox" required />
-                    <label class="form-check-label" for="agecheck">Over 18?</label>
+                    <label class="form-check-label" for="agecheck">I am over 18</label>
                 </div>
-            </div>
+            </v-layout>
             
             <v-layout align-center justify-space-around row fill-height wrap>
                 <router-link :to="{ name: 'login'}">Have an account?</router-link>

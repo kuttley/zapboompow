@@ -3,9 +3,9 @@
         <vue-headful :title="'ZapBoomPow - ' + comic.title" />
         <div v-if="loading">Loading...</div>
         <div v-else class="row px-2">
-            <div>
-                <v-img :src="comic.comic_image" contain width="550px" height="845px"></v-img>
-            </div>
+            <v-layout>
+                <v-img :src="comic.comic_image" contain min-width="250px" max-width="550px" max-height="845px"></v-img>
+            </v-layout>
             <div class="mt-3 ml-auto mr-auto col-md-6">
                 <h1>{{this.comic.comic_title}}</h1>
                 <h5>{{this.comic.comic_description}}</h5>

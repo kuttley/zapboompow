@@ -1,7 +1,7 @@
 <template>
     <div id="login" class="text-center">
       <vue-headful title="ZapBoomPow - Login" />
-      <h2>Login</h2>
+      <h2 class="mt-2">Login</h2>
       <form @submit.prevent="login" class="pt-3 pb-3 rounded">
           <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
               Invalid username and password!

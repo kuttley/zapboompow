@@ -1,7 +1,10 @@
 <template>
     <div id="createCollectPage" class="container-fluid rounded shadow-sm text-center py-2">
         <vue-headful title="ZapBoomPow - Create New Collection" />
-        <h3>Create a new Collection</h3>
+        <v-layout justify-center class="mb-2">
+            <h3 class="mb-0">Create a new Collection</h3>
+            <v-icon color="black" class="ml-2">create_new_folder</v-icon>
+        </v-layout>
         <v-layout align-center justify-center column mt-3>
             <div v-if="!this.loading">
                 <div>
