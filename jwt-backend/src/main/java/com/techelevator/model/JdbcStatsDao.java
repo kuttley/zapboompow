@@ -28,14 +28,16 @@ public class JdbcStatsDao implements StatsDao {
 		String sqlComicsCount = "SELECT COUNT (*) FROM comic";
 		String sqlUsersCount = "SELECT COUNT (*) FROM users";
 		String sqlPremiumUsersCount = "SELECT COUNT (*) FROM users WHERE role = 'premium'";
-					
-
+		String sqlComicsInCollections = "SELECT COUNT (*) FROM comic_collection";		
+		String sqlUniqueComicsInCollections = "SELECT COUNT(DISTINCT comic_id) FROM comic_collection";
 	
     	stats.setCollectionsCount(jdbcTemplate.queryForObject(sqlAllCollections, Integer.class));
     	stats.setPublicCollectionsCount(jdbcTemplate.queryForObject(sqlPublicCollections, Integer.class));
     	stats.setComicsCount(jdbcTemplate.queryForObject(sqlComicsCount, Integer.class));
     	stats.setUsersCount(jdbcTemplate.queryForObject(sqlUsersCount, Integer.class));
     	stats.setPremiumUsersCount(jdbcTemplate.queryForObject(sqlPremiumUsersCount, Integer.class));
+    	stats.setComicsInCollections(jdbcTemplate.queryForObject(sqlComicsInCollections, Integer.class));
+    	stats.setUniqueComicsInCollections(jdbcTemplate.queryForObject(sqlUniqueComicsInCollections, Integer.class));
     	
     	return stats;
 

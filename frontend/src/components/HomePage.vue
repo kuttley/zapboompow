@@ -21,7 +21,9 @@
         <h3 class="text-center">All Collections Stats</h3>
         <table class="table" >
             <tr> {{ stats.collectionsCount }} number of collections </tr>
-            <tr> {{ stats.comicsCount }} total comics searched </tr>
+            <tr> {{ stats.comicsCount }} comics searched </tr>
+            <tr> {{ stats.comicsInCollections }} comics in collections </tr>
+            <tr> {{ stats.uniqueComicsInCollections }} unique comics in collections </tr>
             <tr> {{ stats.usersCount }} number of users </tr>
             <tr> {{ stats.premiumUsersCount }} number of premium users </tr>
             <tr> {{ stats.publicCollectionsCount }} public collections created </tr>

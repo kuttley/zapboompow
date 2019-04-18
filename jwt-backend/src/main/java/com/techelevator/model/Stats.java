@@ -7,6 +7,8 @@ public class Stats {
 	private int comicsCount;
 	private int usersCount;
 	private int premiumUsersCount;
+	private int comicsInCollections;
+	private int uniqueComicsInCollections;
 
 	public int getCollectionsCount() {
 		return collectionsCount;
@@ -37,5 +39,17 @@ public class Stats {
 	}
 	public void setPremiumUsersCount(int premiumUsersCount) {
 		this.premiumUsersCount = premiumUsersCount;
+	}
+	public int getComicsInCollections() {
+		return comicsInCollections;
+	}
+	public void setComicsInCollections(int comicsInCollections) {
+		this.comicsInCollections = comicsInCollections;
+	}
+	public int getUniqueComicsInCollections() {
+		return uniqueComicsInCollections;
+	}
+	public void setUniqueComicsInCollections(int uniqueComicsInCollections) {
+		this.uniqueComicsInCollections = uniqueComicsInCollections;
 	}
 }
