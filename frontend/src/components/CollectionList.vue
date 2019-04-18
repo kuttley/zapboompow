@@ -27,6 +27,7 @@ export default {
     props: {
         profileID: String,
         featuredCollections: Boolean,
+        favorites: Boolean,
     },
     data() {
         return {
@@ -36,20 +37,30 @@ export default {
     methods: {
         getCollectionList() {
             if (this.profileID != null) {
-                apiCalls.get(`/collection/all/${this.profileID}`)
-                    .then((response) => {
-                        response.data.forEach((collection) => {
-                            console.log(this.featuredCollections);
-                            if (this.featuredCollections == true) {
-                                console.log(collection);
-                                if (collection.featured == true || collection.num_favorites >= 5) {
+                if (this.favorites == true) {
+                    apiCalls.get(`/user/favorites/${this.profileID}`)
+                        .then((response) => {
+                            response.data.forEach((collectionID) => {
+                                apiCalls.get(`/collection/${collectionID}`)
+                                    .then((response) => {
+                                        this.getThumbnailForCollection(response.data);
+                                    });
+                            });
+                        });
+                } else {
+                    apiCalls.get(`/collection/all/${this.profileID}`)
+                        .then((response) => {
+                            response.data.forEach((collection) => {
+                                if (this.featuredCollections == true) {
+                                    if (collection.featured == true || collection.num_favorites >= 5) {
+                                        this.getThumbnailForCollection(collection);
+                                    }
+                                } else {
                                     this.getThumbnailForCollection(collection);
                                 }
-                            } else {
-                                this.getThumbnailForCollection(collection);
-                            }
-                        })
-                    });
+                            });
+                        });
+                }
             } else {
                 apiCalls.get(`/collection/all`)
                     .then((response) => {

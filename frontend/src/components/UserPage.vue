@@ -6,13 +6,21 @@
             <div v-if="this.currUser != null && this.currUser.uid == this.profileID">
                 <h2>Your profile</h2>
                 <h5>Your Collections</h5>
+
+                <collection-list :profileID="this.profileID" />
+
+                <h5>Your favorites</h5>
+                <collection-list :favorites="true" :profileID="this.profileID" />
             </div>
             <div v-else>
                 <h2>{{this.profile.username}}'s profile</h2>
                 <h5>Public Collections</h5>
-            </div>
 
-            <collection-list :profileID="this.profileID" />
+                <collection-list :profileID="this.profileID" />
+
+                <h5>{{this.profile.username}}'s favorites</h5>
+                <collection-list :favorites="true" :profileID="this.profileID" />
+            </div>
         </div>
     </div>
 </template>
