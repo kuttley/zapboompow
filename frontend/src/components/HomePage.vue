@@ -1,8 +1,20 @@
 <template>
   <div id="home" class="container-fluid">
     <vue-headful title="ZapBoomPow - Home" />
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Welcome to Zap Boom Pow!</span>
+        </v-card-title>
+        <v-card-text>
+          WE ONLY GOT MARVEL COMICS AND I WILL WORK ON CREATING BETTER COPY AND USER AGREEMENT LATER ON BOYEE!
+        </v-card-text>
+        <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+      </v-card>
+      
+    </v-dialog>
     <div class="row wrap justify-content-between">
-
+    
       <div id="main" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
         <div class="row ml-1 mb-2">
           <v-icon color="purple" class="mr-1">fiber_new</v-icon>
@@ -59,6 +71,7 @@
 <script>
 import apiCalls from '@/apiCalls';
 import CollectionList from '@/components/CollectionList.vue';
+import auth from '@/auth';
 
 export default {
   components: {
@@ -68,7 +81,8 @@ export default {
     return {
       newestReleases: [],
       loading: true,
-      stats: []
+      stats: [],
+      dialog: (auth.getUser() != null ? false : true),
     }
   },
   methods: {
