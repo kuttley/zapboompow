@@ -8,12 +8,15 @@
             </div>
             <div v-else>
                 <v-layout mx-0 row justify-space-between align-center wrap>
-                    <h2>{{this.collectionDetails.collection_name}} Collection</h2>
-                    <div class="col col-xs-12 col-md-1">
+                    <h2 class="my-0">{{this.collectionDetails.collection_name}} Collection</h2>
+                    <div v-if="this.currUser != null">
                         <v-icon :color="`${favorited == true ? 'red' : ''}`" @click="favoriteCollection()">favorite</v-icon>
-                        <p>{{this.collectionDetails.num_favorites}} favs</p>
+                        <p class="my-0">{{this.collectionDetails.num_favorites}} favs</p>
                     </div>
                 </v-layout>
+                <v-flex justify-end>
+                    <v-btn class="my-0" color="info">Share this collection</v-btn>
+                </v-flex>
                 <h3 v-if="this.collectionDetails.comic_ids_in_collection < 1">No comics in this collection.</h3>
                 <div v-else>
                     <v-container fluid grid-list-md>
@@ -81,15 +84,19 @@ export default {
                     if (response.data.public_bool) {
                         this.collectionDetails = response.data;
                         this.title = this.collectionDetails.collection_name;
-                        apiCalls.get(`/user/favorites/${this.currUser.uid}`)
-                            .then((response) => {
-                                let comicID = this.$route.params.id;
-                                if (response.data.includes(comicID.toString())) {
-                                    this.favorited = true;
-                                }
-                                this.getComicsForCollection();
-                            })
-                            .catch(() => { this.getComicsForCollection(); });
+                        if (this.currUser != null) {
+                            apiCalls.get(`/user/favorites/${this.currUser.uid}`)
+                                .then((response) => {
+                                    let comicID = this.$route.params.id;
+                                    if (response.data.includes(comicID.toString())) {
+                                        this.favorited = true;
+                                    }
+                                    this.getComicsForCollection();
+                                })
+                                .catch(() => { this.getComicsForCollection(); });
+                        } else {
+                            this.getComicsForCollection();
+                        }
 
                     } else {
                         if (this.currUser != null) {
@@ -154,9 +161,11 @@ export default {
             if (this.favorited == true) {
                 apiCalls.post('/removeFromFavorites', { 'user_id': this.currUser.uid, 'collection_id': this.collectionDetails.collection_id});
                 this.favorited = false;
+                this.collectionDetails.num_favorites--;
             } else {
                 apiCalls.post('/addToFavorites', { 'user_id': this.currUser.uid, 'collection_id': this.collectionDetails.collection_id});
                 this.favorited = true;
+                this.collectionDetails.num_favorites++;
             }
         }
     },
