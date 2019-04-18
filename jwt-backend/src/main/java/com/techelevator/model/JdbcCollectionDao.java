@@ -29,7 +29,10 @@ public class JdbcCollectionDao implements CollectionDao {
 
 	@Override
 	public Collection saveCollection(long user_id, String collection_name, Boolean public_bool) {
-		
+		if (collection_name.length() <= 0) {
+			collection_name = "Untitled";
+
+        }
 		
 		long newId = jdbcTemplate.queryForObject("INSERT INTO collections(collection_name, public_bool, user_id) VALUES (?, ?, ?) RETURNING collection_id", Long.class, collection_name,
 				public_bool, user_id);
@@ -40,6 +43,7 @@ public class JdbcCollectionDao implements CollectionDao {
         newCollection.setPublic_bool(public_bool);
         newCollection.setUser_id(user_id);
         newCollection.setNum_favorites(0L);
+       
        
 
         return newCollection;
