@@ -49,23 +49,23 @@
                                 <v-btn @click.prevent="renameCollection(); collectionRename = '';" color="info" dark>Rename</v-btn>
                             </div>
                             <div>
-                                <v-btn @click.prevent="deleteCollection" :loading="deleted" :disabled="deleted" color="warning" dark>Delete Collection</v-btn>
+                                <v-btn @click.prevent="deleteCollectionConfirmation=true" :loading="deleted" :disabled="deleted" color="warning" dark>Delete Collection</v-btn>
                             </div>
                         </v-layout>
                         <v-layout row justify-center>
-<v-dialog v-model="deleteCollectionConfirmation" persistent max-width="290">
-
-  <v-card>
-    <v-card-title class="headline">Are you really sure you want to do this?</v-card-title>
-    <v-card-text>Once you click Confirm Delete your collection is gone like pixel dust in the hands of Thanos :(</v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="green darken-1" flat @click="deleteCollectionConfirmation= false">Cancel</v-btn>
-      <v-btn color="green darken-1" flat @click="deleteCollection">Confirm Delete</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
-</v-layout>
+                            <v-dialog v-model="deleteCollectionConfirmation" persistent max-width="290">
+                            
+                            <v-card>
+                                <v-card-title class="headline">Are you really sure you want to do this?</v-card-title>
+                                <v-card-text>Once you click Confirm Delete your collection is gone like pixel dust in the hands of Thanos :(</v-card-text>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="green darken-1" flat @click="deleteCollectionConfirmation= false">Cancel</v-btn>
+                                <v-btn color="green darken-1" flat @click="deleteCollection">Confirm Delete</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                            </v-dialog>
+                        </v-layout>
                     </div>
                     <div v-else-if="deleted == true">
                         <v-alert :value="true" type="success">Collection deleted...</v-alert>

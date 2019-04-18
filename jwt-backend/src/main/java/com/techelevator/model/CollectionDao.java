@@ -22,4 +22,6 @@ public interface CollectionDao {
 
 	public boolean deleteCollection(long collection_id);
 
+	public void deleteComicInCollection(long collection_id, long comic_id);
+
 }

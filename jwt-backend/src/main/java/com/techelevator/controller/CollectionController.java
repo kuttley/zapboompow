@@ -149,4 +149,22 @@ public class CollectionController {
     		throw new CollectionNotFoundException(0L, "You don't have access.");
     	}
     }
+	
+	@RequestMapping(path="/remove", method=RequestMethod.POST)
+    public void removeComic(@Valid @RequestBody ComicCollection comicCollection, BindingResult result) throws CollectionNotFoundException {
+		
+		if(authProvider.getCurrentUser() != null && authProvider.getCurrentUser().getId() == collectionDao.findById(comicCollection.getCollection_id()).getUser_id()) {
+	    	if(result.hasErrors()) {
+	            String errorMessages = "";
+	            for(ObjectError error : result.getAllErrors()) {
+	                errorMessages += error.getDefaultMessage() + "\n";
+	            }
+	            throw new CollectionNotFoundException(comicCollection.getCollection_id(), errorMessages);
+	    	}
+	    	System.out.println("test");
+	    	collectionDao.deleteComicInCollection(comicCollection.getCollection_id(), comicCollection.getComic_id());
+    	} else {
+    		throw new CollectionNotFoundException(0L, "You don't have access.");
+    	}
+    }
 }

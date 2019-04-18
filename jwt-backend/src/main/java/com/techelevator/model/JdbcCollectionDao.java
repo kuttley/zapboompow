@@ -109,6 +109,12 @@ public class JdbcCollectionDao implements CollectionDao {
 	}
 	
 	@Override
+	public void deleteComicInCollection(long collection_id, long comic_id) {
+		String sql = "DELETE FROM comic_collection WHERE comic_id = ? AND collection_id = ?";
+		jdbcTemplate.update(sql, comic_id, collection_id);
+	}
+	
+	@Override
 	public long[] getComicsInCollectionByCollectionId(long collection_id) {
 		List<Long> comicIds = new ArrayList<Long>();
 		

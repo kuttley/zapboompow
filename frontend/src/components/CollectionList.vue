@@ -40,6 +40,7 @@ export default {
     data() {
         return {
             collections: [],
+            favCollectionIds: [],
             currUser: auth.getUser(),
         }
     },
@@ -52,7 +53,6 @@ export default {
                             response.data.forEach((collectionID) => {
                                 apiCalls.get(`/collection/${collectionID}`)
                                     .then((response) => {
-                                        console.log(response);
                                         response.data.favorited = true;
                                         this.getThumbnailForCollection(response.data);
                                     });
@@ -62,6 +62,12 @@ export default {
                     apiCalls.get(`/collection/all/${this.profileID}`)
                         .then((response) => {
                             response.data.forEach((collection) => {
+                                console.log(collection.collection_id);
+                                if (this.favCollectionIds.includes(collection.collection_id.toString())) {
+                                    collection.favorited = true;
+                                } else {
+                                    collection.favorited = false;
+                                }
                                 if (this.featuredCollections == true) {
                                     if (collection.featured == true || collection.num_favorites >= 5) {
                                         this.getThumbnailForCollection(collection);
@@ -76,6 +82,11 @@ export default {
                 apiCalls.get(`/collection/all`)
                     .then((response) => {
                         response.data.forEach((collection) => {
+                            if (this.favCollectionIds.includes(collection.collection_id.toString())) {
+                                collection.favorited = true;
+                            } else {
+                                collection.favorited = false;
+                            }
                             if (this.featuredCollections == true) {
                                 if (collection.featured == true || collection.num_favorites >= 5) {
                                     apiCalls.get(`/user/${collection.user_id}`)
@@ -128,8 +139,15 @@ export default {
                 collection.favorited = true;
             }
         },
+        getFavorites() {
+            apiCalls.get(`/user/favorites/${this.currUser.uid}`)
+                .then((response) => {
+                    this.favCollectionIds = response.data;
+                });
+        },
     },
     created() {
+        this.getFavorites();
         this.getCollectionList();
     }
 }
