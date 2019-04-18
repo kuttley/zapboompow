@@ -15,10 +15,10 @@
                 </div>
                 <h5>Your Collections</h5>
 
-                <collection-list :profileID="this.profileID" />
+                <collection-list :profileID="this.profileID" v-on:reload="reload" :key="componentKey" />
 
                 <h5>Your favorites</h5>
-                <collection-list :favorites="true" :profileID="this.profileID" />
+                <collection-list :favorites="true" :profileID="this.profileID" v-on:reload="reload" :key="componentKey" />
             </div>
             <div v-else>
                 <div class="row ml-1 mb-3">
@@ -55,6 +55,7 @@ export default {
     },
     data() {
         return {
+            componentKey: 0,
             title: '',
             currUser: null,
             loading: true,
@@ -76,6 +77,9 @@ export default {
                 })
                 .catch(() => this.$router.push('/404'));
         },
+        reload() {
+            this.componentKey += 1;
+        }
     },
     created() {
         this.currUser = auth.getUser();

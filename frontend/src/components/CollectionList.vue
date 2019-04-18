@@ -62,7 +62,6 @@ export default {
                     apiCalls.get(`/collection/all/${this.profileID}`)
                         .then((response) => {
                             response.data.forEach((collection) => {
-                                console.log(collection.collection_id);
                                 if (this.favCollectionIds.includes(collection.collection_id.toString())) {
                                     collection.favorited = true;
                                 } else {
@@ -132,11 +131,17 @@ export default {
         },
         favoriteCollection(collection) {
             if (collection.favorited == true) {
-                apiCalls.post('/removeFromFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id});
-                collection.favorited = false;
+                apiCalls.post('/removeFromFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id})
+                    .then(() => {
+                        collection.favorited = false;
+                        this.$emit('reload');
+                    });
             } else {
-                apiCalls.post('/addToFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id});
-                collection.favorited = true;
+                apiCalls.post('/addToFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id})
+                    .then(() => {
+                        collection.favorited = true;
+                        this.$emit('reload');
+                    });
             }
         },
         getFavorites() {
