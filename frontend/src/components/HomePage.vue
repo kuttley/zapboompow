@@ -98,7 +98,6 @@
 <script>
 import apiCalls from '@/apiCalls';
 import CollectionList from '@/components/CollectionList.vue';
-import auth from '@/auth';
 
 export default {
   components: {
