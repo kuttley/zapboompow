@@ -9,14 +9,19 @@
             <div v-else>
                 <v-layout mx-0 row justify-space-between align-center wrap>
                     <h2 class="my-0">{{this.collectionDetails.collection_name}} Collection</h2>
-                    <div v-if="this.currUser != null">
+                    <div class="mr-2 text-center" v-if="this.currUser != null">
                         <v-icon :color="`${favorited == true ? 'red' : ''}`" @click="favoriteCollection()">favorite</v-icon>
                         <p class="my-0">{{this.collectionDetails.num_favorites}} favs</p>
                     </div>
                 </v-layout>
-                <v-flex justify-end>
-                    <v-btn class="my-0" color="info">Share this collection</v-btn>
-                </v-flex>
+                <v-layout justify-end v-if="this.collectionDetails.public_bool == true">
+                    <v-tooltip color="green" left v-model="copied">
+                        <template v-slot:activator="copied">
+                            <v-btn class="mb-0 mr-0" small color="info" @click="copyToClipboard">Share this collection</v-btn>
+                        </template>
+                        <span>Zap! Link copied!</span>
+                    </v-tooltip>
+                </v-layout>
                 <h3 v-if="this.collectionDetails.comic_ids_in_collection < 1">No comics in this collection.</h3>
                 <div v-else>
                     <v-container fluid grid-list-md>
@@ -35,7 +40,6 @@
                         </v-layout>
                     </v-container>
                 </div>
-                <!-- <h2>{{this.collectionDetails}}</h2> -->
                 <div v-if="this.currUser != null && this.currUser.uid == this.collectionDetails.user_id">
                     <div v-if="deleted == null">
                         <v-layout align-end column>
@@ -74,7 +78,8 @@ export default {
             deleted: null,
             currUser: auth.getUser(),
             collectionRename: '',
-            favorited: false
+            favorited: false,
+            copied: false,
         }
     },
     methods: {
@@ -97,7 +102,6 @@ export default {
                         } else {
                             this.getComicsForCollection();
                         }
-
                     } else {
                         if (this.currUser != null) {
                             if (this.currUser.uid == response.data.user_id) {
@@ -167,6 +171,17 @@ export default {
                 this.favorited = true;
                 this.collectionDetails.num_favorites++;
             }
+        },
+        copyToClipboard() {
+            console.log(window.location.href);
+            let link = document.createElement("textarea");
+            link.value = window.location.href;
+            document.body.appendChild(link);
+            link.select();
+            document.execCommand("copy");
+            document.body.removeChild(link);
+            this.copied = true;
+            setTimeout(() => { this.copied = false; }, 2000);
         }
     },
     created() {
