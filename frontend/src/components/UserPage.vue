@@ -18,7 +18,7 @@
                 <collection-list :profileID="this.profileID" v-on:reload="reload" :key="componentKey" />
 
                 <h5>Your favorites</h5>
-                <collection-list :favorites="true" :profileID="this.profileID" v-on:reload="reload" :key="componentKey" />
+                <collection-list :favorites="true" :profileID="this.profileID" v-on:reload="reload" :key="componentKey+1" />
             </div>
             <div v-else>
                 <div class="row ml-1 mb-3">

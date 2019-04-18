@@ -36,7 +36,7 @@
             <p>If you have any questions about these Terms, please contact us.</p>
         </v-card-text>
         
-        <v-btn color="blue darken-1" flat @click="dialog = false">I Agree</v-btn>
+        <v-btn color="blue darken-1" flat @click="dialogAccept()">I Agree</v-btn>
       </v-card>
       
     </v-dialog>
@@ -109,7 +109,7 @@ export default {
       newestReleases: [],
       loading: true,
       stats: [],
-      dialog: (auth.getUser() != null ? false : true),
+      dialog: (localStorage.getItem('DialogAccepted') != null ? false : true),
     }
   },
   methods: {
@@ -142,6 +142,10 @@ export default {
             this.stats = response.data;
             this.loading = false;
           });
+    },
+    dialogAccept() {
+      localStorage.setItem('DialogAccepted', 'true');
+      this.dialog = false;
     }
   },
   created() {

@@ -21,7 +21,7 @@
                 </div>
 
                 <div v-if="this.currUser != null">
-                    <v-menu transition="slide-y-transition" bottom>
+                    <v-menu v-if="this.userCollections.length > 0" transition="slide-y-transition" bottom>
                         <template v-slot:activator="{ on }">
                             <v-btn class="purple" color="primary" dark v-on="on">Choose a Collection to add to<v-icon class="ml-1">library_add</v-icon></v-btn>
                         </template>
@@ -31,6 +31,8 @@
                             </v-list-tile>
                         </v-list>
                     </v-menu>
+                    <v-btn v-else to="/collections/create" color="primary white--text" class="text-none text-decoration-none" dark>Create Collection<v-icon class="ml-1">create_new_folder</v-icon></v-btn>
+                    <v-alert dismissible :value="alreadyInCollection" type="error">This comic is already in that collection!</v-alert>
                 </div>
             </div>
         </div>
@@ -54,7 +56,8 @@ export default {
                 comic_creators: [],
             },
             userCollections: [],
-            collectionToAddTo: ''
+            collectionToAddTo: '',
+            alreadyInCollection: false,
         }
     },
     methods: {
@@ -64,13 +67,18 @@ export default {
                     response.data.forEach(collection => {
                         this.userCollections.push(collection);
                     });
-                    this.collectionToAddTo = this.userCollections[0].id;
+                    if (this.userCollections.length > 0) {
+                        this.collectionToAddTo = this.userCollections[0].id;
+                    }
                 });
         },
         addToCollection(collectionId) {
             apiCalls.post(`/collection/add`, { 'collection_id': collectionId, 'comic_id': this.$route.params.id})
                 .then(() => {
                     this.$router.push(`/collections/${collectionId}`);
+                })
+                .catch(() => {
+                    this.alreadyInCollection = true;
                 });
         }
     },

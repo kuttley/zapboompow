@@ -189,7 +189,6 @@ export default {
             }
         },
         copyToClipboard() {
-            console.log(window.location.href);
             let link = document.createElement("textarea");
             link.value = window.location.href;
             document.body.appendChild(link);

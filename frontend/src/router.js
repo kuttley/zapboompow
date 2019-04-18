@@ -13,7 +13,6 @@ import Search from '@/views/Search.vue';
 import PageNotFound from '@/views/PageNotFound.vue';
 import PremiumUpgrade from '@/views/PremiumUpgrade.vue';
 
-
 Vue.use(Router)
 
 const router = new Router({
@@ -89,7 +88,6 @@ const router = new Router({
       component: PremiumUpgrade,
       beforeEnter(to, from, next) {
         if (auth.getUser() != null) {
-          console.log(auth.getUser());
           if (auth.getUser().rol == 'premium') {
             next('/');
           } else {
