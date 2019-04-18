@@ -35,7 +35,9 @@
                                     <h4 class="grey--text text--darken-4">{{ comic.title }}</h4>
                                 </v-card-title>
                             </router-link>
-                            <v-icon @click="removeFromCollection(comic.id)">delete</v-icon>
+                            <div v-if="currUser != null && currUser.uid == collectionDetails.user_id">
+                                <v-icon @click="removeFromCollection(comic.id)">delete</v-icon>
+                            </div>
                             </v-card>
                         </v-flex>
                         </v-layout>
