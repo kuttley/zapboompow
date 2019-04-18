@@ -161,12 +161,13 @@ public class JdbcUserDao implements UserDao {
 
 	@Override
 	public User getOtherUserById(Long id) {
-		String sql = "SELECT username FROM users WHERE user_id = ?";
+		String sql = "SELECT username, role FROM users WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 		if(results.next()) {
 			User otherUser = new User();
 
 			otherUser.setUsername(results.getString("username"));
+			otherUser.setRole(results.getString("role"));
 	        
 	        String userFavorites = "SELECT collection_id FROM user_favorites_collections WHERE user_id = ?";
 	        SqlRowSet favoritesResults = jdbcTemplate.queryForRowSet(userFavorites, id);

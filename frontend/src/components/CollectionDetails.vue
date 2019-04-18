@@ -17,7 +17,7 @@
                 <v-layout justify-end v-if="this.collectionDetails.public_bool == true">
                     <v-tooltip color="green" left v-model="copied">
                         <template v-slot:activator="copied">
-                            <v-btn class="mb-0 mr-0" small color="info" @click="copyToClipboard">Share this collection</v-btn>
+                            <v-btn class="mb-0 mr-0" small color="info" @click="copyToClipboard"><v-icon class="pr-1">file_copy</v-icon>Share this collection</v-btn>
                         </template>
                         <span>Zap! Link copied!</span>
                     </v-tooltip>
@@ -35,6 +35,7 @@
                                     <h4 class="grey--text text--darken-4">{{ comic.title }}</h4>
                                 </v-card-title>
                             </router-link>
+                            <v-icon @click="removeFromCollection(comic.id)">delete</v-icon>
                             </v-card>
                         </v-flex>
                         </v-layout>
@@ -51,6 +52,20 @@
                                 <v-btn @click.prevent="deleteCollection" :loading="deleted" :disabled="deleted" color="warning" dark>Delete Collection</v-btn>
                             </div>
                         </v-layout>
+                        <v-layout row justify-center>
+<v-dialog v-model="deleteCollectionConfirmation" persistent max-width="290">
+
+  <v-card>
+    <v-card-title class="headline">Are you really sure you want to do this?</v-card-title>
+    <v-card-text>Once you click Confirm Delete your collection is gone like pixel dust in the hands of Thanos :(</v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="green darken-1" flat @click="deleteCollectionConfirmation= false">Cancel</v-btn>
+      <v-btn color="green darken-1" flat @click="deleteCollection">Confirm Delete</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+</v-layout>
                     </div>
                     <div v-else-if="deleted == true">
                         <v-alert :value="true" type="success">Collection deleted...</v-alert>
@@ -80,6 +95,7 @@ export default {
             collectionRename: '',
             favorited: false,
             copied: false,
+            deleteCollectionConfirmation: false,
         }
     },
     methods: {
@@ -182,6 +198,10 @@ export default {
             document.body.removeChild(link);
             this.copied = true;
             setTimeout(() => { this.copied = false; }, 2000);
+        },
+        removeFromCollection(comicId) {
+            apiCalls.post(`/collection/remove`, { 'collection_id': this.$route.params.id, 'comic_id': comicId});
+            this.$forceUpdate();
         }
     },
     created() {

@@ -4,7 +4,15 @@
         <div v-if="loading">Loading...</div>
         <div v-else>
             <div v-if="this.currUser != null && this.currUser.uid == this.profileID">
-                <h2>Your profile</h2>
+                <div class="row ml-1 mb-3">
+                    <h2 class="mb-0">Your profile</h2>
+                    <v-tooltip right>
+                        <template v-slot:activator="{on}">
+                            <v-icon v-if="profile.role == 'premium'" color="light-green darken-1" class="ml-1" v-on="on">verified_user</v-icon>
+                        </template>
+                        <span>Premium User</span>
+                    </v-tooltip>
+                </div>
                 <h5>Your Collections</h5>
 
                 <collection-list :profileID="this.profileID" />
@@ -13,7 +21,15 @@
                 <collection-list :favorites="true" :profileID="this.profileID" />
             </div>
             <div v-else>
-                <h2>{{this.profile.username}}'s profile</h2>
+                <div class="row ml-1 mb-3">
+                    <h2 class="mb-0">{{this.profile.username}}'s profile</h2>
+                    <v-tooltip right>
+                        <template v-slot:activator="{on}">
+                            <v-icon v-if="profile.role == 'premium'" color="light-green darken-1" class="ml-1" v-on="on">verified_user</v-icon>
+                        </template>
+                        <span>Premium User</span>
+                    </v-tooltip>
+                </div>
                 <h5>Public Collections</h5>
 
                 <collection-list :profileID="this.profileID" />
@@ -44,6 +60,7 @@ export default {
             loading: true,
             profile: {
                 username: '',
+                role: '',
                 collections: []
             }
         }
@@ -53,6 +70,7 @@ export default {
             apiCalls.get(`/user/${this.profileID}`)
                 .then((response) => {
                     this.profile.username = response.data.username;
+                    this.profile.role = response.data.role;
                     this.title = "ZapBoomPow - " + this.profile.username;
                     this.loading = false;
                 })

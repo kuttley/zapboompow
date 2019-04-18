@@ -23,9 +23,7 @@
                 <div v-if="this.currUser != null">
                     <v-menu transition="slide-y-transition" bottom>
                         <template v-slot:activator="{ on }">
-                            <v-btn class="purple" color="primary" dark v-on="on">
-                                Choose a Collection to add to
-                            </v-btn>
+                            <v-btn class="purple" color="primary" dark v-on="on">Choose a Collection to add to<v-icon class="ml-1">library_add</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-tile v-for="collection in userCollections" :key="collection.collection_id" @click="addToCollection(collection.collection_id)">

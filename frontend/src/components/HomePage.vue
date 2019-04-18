@@ -4,7 +4,10 @@
     <div class="row wrap justify-content-between">
 
       <div id="main" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
-        <h2>Recent Comic Releases</h2>
+        <div class="row ml-1 mb-2">
+          <v-icon color="purple" class="mr-1">fiber_new</v-icon>
+          <h2 class="mb-0">Recent Comic Releases</h2>
+        </div>
 
         <v-carousel hide-delimiters height="290" dark class="my-3 pt-3">
           <v-carousel-item v-if="loading"><h4 class="text-center">Loading...</h4></v-carousel-item>
@@ -18,26 +21,33 @@
       </div>
 
       <div id="sidebar" class="col col-lg-auto col-12 mb-3 rounded pt-2 shadow-sm">
-        <h3 class="text-center">All Collections Stats</h3>
-        <table class="table" >
-            <tr> {{ stats.collectionsCount }} number of collections </tr>
-            <tr> {{ stats.comicsCount }} comics searched </tr>
-            <tr> {{ stats.comicsInCollections }} comics in collections </tr>
-            <tr> {{ stats.uniqueComicsInCollections }} unique comics in collections </tr>
-            <tr> {{ stats.usersCount }} number of users </tr>
-            <tr> {{ stats.premiumUsersCount }} number of premium users </tr>
-            <tr> {{ stats.publicCollectionsCount }} public collections created </tr>
+        <div class="row justify-center mb-2">
+          <v-icon color="green darken-1" class="mr-1">info</v-icon>
+          <h3 class="mb-0">All Collections Stats</h3>
+        </div>
+        <v-divider class="my-1"></v-divider>
+        <table class="table ml-2">
+            <tr class="subheading"> {{ stats.collectionsCount }} total collections </tr>
+            <tr class="subheading"> {{ stats.publicCollectionsCount }} public collections created </tr>
+            <tr class="subheading"> {{ stats.comicsCount }} comics searched </tr>
+            <tr class="subheading"> {{ stats.comicsInCollections }} total comics in collections </tr>
+            <tr class="subheading"> {{ stats.uniqueComicsInCollections }} unique comics in collections </tr>
+            <tr class="subheading"> {{ stats.usersCount }} total users </tr>
+            <tr class="subheading"> {{ stats.premiumUsersCount }} premium users </tr>
         </table>
       </div>
     </div>
 
     <div class="row">    
       <div id="featured" class="col col-sm-auto rounded pt-2 shadow-sm">
-        <h2>Featured Collections</h2>
+        <div class="row ml-1 mb-2">
+          <v-icon color="indigo lighten-1" class="mr-1">check_circle</v-icon>
+          <h2 class="mb-0">Featured Collections</h2>
+        </div>
         <collection-list :featuredCollections="true" />
 
         <div class="d-flex flex-column justify-content-sm-center align-items-md-end mb-3">
-          <router-link to="/collections" tag="button" class="btn btn-lg btn-success">View All</router-link>
+          <router-link to="/collections" tag="button" class="v-btn text-none success darken-2">View All</router-link>
         </div>
 
       </div>

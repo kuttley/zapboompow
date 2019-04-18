@@ -5,6 +5,8 @@
                 <v-card tile min-height="195" max-width="170" color="rgba(255,255,255,0.4)">
                     <router-link :to="`/collections/${collection.collection_id}`">
                         <v-img :src="collection.thumbnail" height="150" my-2 contain></v-img>
+                    </router-link>
+                    <router-link :to="`/collections/${collection.collection_id}`">
                         <v-card-title primary-title class="pt-2 text-center justify-content-center grey--text text--darken-4">
                             <div>
                                 <h4 class="mb-0">{{collection.collection_name}}</h4>
@@ -14,6 +16,11 @@
                             </div>
                         </v-card-title>
                     </router-link>
+                    <v-card-actions class="pt-0" v-if="currUser != null">
+                        <v-layout class="justify-end mr-1">
+                            <v-icon :color="`${collection.favorited == true ? 'red' : 'none'}`" @click="favoriteCollection(collection)">favorite</v-icon>
+                        </v-layout>
+                    </v-card-actions>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -22,6 +29,7 @@
 
 <script>
 import apiCalls from '@/apiCalls';
+import auth from '@/auth';
 
 export default {
     props: {
@@ -32,6 +40,7 @@ export default {
     data() {
         return {
             collections: [],
+            currUser: auth.getUser(),
         }
     },
     methods: {
@@ -43,6 +52,8 @@ export default {
                             response.data.forEach((collectionID) => {
                                 apiCalls.get(`/collection/${collectionID}`)
                                     .then((response) => {
+                                        console.log(response);
+                                        response.data.favorited = true;
                                         this.getThumbnailForCollection(response.data);
                                     });
                             });
@@ -71,7 +82,7 @@ export default {
                                         .then((response) => {
                                             collection.username = response.data.username;
                                             this.getThumbnailForCollection(collection);
-                                        });
+                                        })
                                 }
                             } else {
                                 apiCalls.get(`/user/${collection.user_id}`)
@@ -106,6 +117,15 @@ export default {
             } else {
                 collection.thumbnail = '';
                 this.collections.push(collection);
+            }
+        },
+        favoriteCollection(collection) {
+            if (collection.favorited == true) {
+                apiCalls.post('/removeFromFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id});
+                collection.favorited = false;
+            } else {
+                apiCalls.post('/addToFavorites', { 'user_id': this.currUser.uid, 'collection_id': collection.collection_id});
+                collection.favorited = true;
             }
         },
     },
