@@ -55,9 +55,9 @@ export default {
 <style lang="scss" scoped>
 #app {
   background-color: #F9EBBC;
-  background-image: url('./assets/background.png');
+  background-image: url('./assets/comicbackground.png');
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   font-family: 'YanoneKaffeesatz', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
