@@ -14,7 +14,7 @@
                         <p class="my-0">{{this.collectionDetails.num_favorites}} favs</p>
                     </div>
                 </v-layout>
-                <v-layout justify-end>
+                <v-layout justify-end v-if="this.collectionDetails.public_bool == true">
                     <v-tooltip color="green" left v-model="copied">
                         <template v-slot:activator="copied">
                             <v-btn class="mb-0 mr-0" small color="info" @click="copyToClipboard">Share this collection</v-btn>
