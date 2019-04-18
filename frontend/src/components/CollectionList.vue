@@ -140,10 +140,12 @@ export default {
             }
         },
         getFavorites() {
-            apiCalls.get(`/user/favorites/${this.currUser.uid}`)
-                .then((response) => {
-                    this.favCollectionIds = response.data;
-                });
+            if (this.currUser != null) {
+                apiCalls.get(`/user/favorites/${this.currUser.uid}`)
+                    .then((response) => {
+                        this.favCollectionIds = response.data;
+                    });
+            }
         },
     },
     created() {
