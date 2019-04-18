@@ -200,8 +200,10 @@ export default {
             setTimeout(() => { this.copied = false; }, 2000);
         },
         removeFromCollection(comicId) {
-            apiCalls.post(`/collection/remove`, { 'collection_id': this.$route.params.id, 'comic_id': comicId});
-            this.$forceUpdate();
+            apiCalls.post(`/collection/remove`, { 'collection_id': this.$route.params.id, 'comic_id': comicId})
+                .then(() => {
+                    this.$emit('reload');
+                });
         }
     },
     created() {
