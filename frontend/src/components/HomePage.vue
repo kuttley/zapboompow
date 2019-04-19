@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Welcome to Zap Boom Pow!<img src="@/assets/logo.png" width="100px" alt="zapboompow"> <br>Search and organize your dream Marvel Comics collection! </span>
+          <span class="headline">Welcome to Zap Boom Pow!<img src="@/assets/logo.png" width="100px" alt="zapboompow"> <br>The BEST place to showcase and swap your Marvel Comics collections! </span>
         </v-card-title>
         <v-card-text>
           <h2>Terms and Conditions ("Terms")</h2>
