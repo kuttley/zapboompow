@@ -14,6 +14,7 @@
                         <p class="my-0">{{this.collectionDetails.num_favorites}} favs</p>
                     </div>
                 </v-layout>
+                <h3>by <router-link :to="`/user/${this.collectionDetails.user_id}`">{{this.username}}</router-link></h3>
                 <v-layout justify-end v-if="this.collectionDetails.public_bool == true">
                     <v-tooltip color="green" left v-model="copied">
                         <template v-slot:activator="copied">
@@ -90,6 +91,7 @@ export default {
         return {
             title: '',
             loading: true,
+            username: '',
             collectionDetails: null,
             collectionComics: [],
             deleted: null,
@@ -105,6 +107,10 @@ export default {
             apiCalls.get(`/collection/${this.$route.params.id}`)
                 .then((response) => {
                     if (response.data.public_bool) {
+                        apiCalls.get(`/user/${response.data.user_id}`)
+                            .then((user) => {
+                                this.username = user.data.username;
+                            });
                         this.collectionDetails = response.data;
                         this.title = this.collectionDetails.collection_name;
                         if (this.currUser != null) {
@@ -123,6 +129,10 @@ export default {
                     } else {
                         if (this.currUser != null) {
                             if (this.currUser.uid == response.data.user_id) {
+                            apiCalls.get(`/user/${response.data.user_id}`)
+                                .then((user) => {
+                                    this.username = user.data.username;
+                                });
                                 this.collectionDetails = response.data;
                                 this.title = this.collectionDetails.collection_name;
                                 this.getComicsForCollection();

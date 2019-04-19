@@ -6,16 +6,18 @@
                     <router-link :to="`/collections/${collection.collection_id}`">
                         <v-img :src="collection.thumbnail" height="150" my-2 contain></v-img>
                     </router-link>
-                    <router-link :to="`/collections/${collection.collection_id}`">
                         <v-card-title primary-title class="pt-2 text-center justify-content-center grey--text text--darken-4">
                             <div>
-                                <h4 class="mb-0">{{collection.collection_name}}</h4>
-                                <p v-if="profileID == null" class="mb-0">{{collection.username}}</p>
+                                <router-link text-none :to="`/collections/${collection.collection_id}`">
+                                    <h4 class="mb-0">{{collection.collection_name}}</h4>
+                                </router-link>
+                                <router-link :to="`/user/${collection.user_id}`">
+                                    <p class="mb-0">{{collection.username}}</p>
+                                </router-link>
                                 <p v-if="collection.public_bool == false" class="mb-0">Private</p>
                                 <div class="mb-0">{{collection.comic_ids_in_collection.length}} comic{{(collection.comic_ids_in_collection.length > 1 || collection.comic_ids_in_collection.length == 0) ? 's' : ''}} in collection</div>
                             </div>
                         </v-card-title>
-                    </router-link>
                     <v-card-actions class="pt-0" v-if="currUser != null">
                         <v-layout class="justify-end mr-1">
                             <v-icon :color="`${collection.favorited == true ? 'red' : 'none'}`" @click="favoriteCollection(collection)">favorite</v-icon>
@@ -54,7 +56,11 @@ export default {
                                 apiCalls.get(`/collection/${collectionID}`)
                                     .then((response) => {
                                         response.data.favorited = true;
-                                        this.getThumbnailForCollection(response.data);
+                                        apiCalls.get(`/user/${response.data.user_id}`)
+                                            .then((user) => {
+                                                response.data.username = user.data.username;
+                                                this.getThumbnailForCollection(response.data);
+                                            });
                                     });
                             });
                         });
@@ -69,10 +75,18 @@ export default {
                                 }
                                 if (this.featuredCollections == true) {
                                     if (collection.featured == true || collection.num_favorites >= 5) {
-                                        this.getThumbnailForCollection(collection);
+                                        apiCalls.get(`/user/${collection.user_id}`)
+                                            .then((response) => {
+                                                collection.username = response.data.username;
+                                                this.getThumbnailForCollection(collection);
+                                            });
                                     }
                                 } else {
-                                    this.getThumbnailForCollection(collection);
+                                    apiCalls.get(`/user/${collection.user_id}`)
+                                        .then((response) => {
+                                            collection.username = response.data.username;
+                                            this.getThumbnailForCollection(collection);
+                                        });
                                 }
                             });
                         });
@@ -92,7 +106,7 @@ export default {
                                         .then((response) => {
                                             collection.username = response.data.username;
                                             this.getThumbnailForCollection(collection);
-                                        })
+                                        });
                                 }
                             } else {
                                 apiCalls.get(`/user/${collection.user_id}`)
@@ -161,6 +175,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+h4 {
+    color: #21272d;
+}
+p {
+    color: #21272d;
+}
 </style>
 
